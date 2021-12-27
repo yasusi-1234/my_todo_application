@@ -119,4 +119,9 @@
 ### ER図
 ![ER図](plantuml/db_er.png)
 
+### ユースケース図
+![ユースケース図](plantuml/uc.png)
+
+### シーケンス図
+
 ## その他
