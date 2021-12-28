@@ -133,4 +133,7 @@
 ### タスク登録処理の流れ
 ![タスク登録シーケンス図](plantuml/task_register_se.png)
 
+### タスク更新処理の流れ
+![タスク更新シーケンス図](plantuml/task_update_se.png)
+
 ## その他
