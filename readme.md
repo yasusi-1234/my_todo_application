@@ -136,4 +136,11 @@
 ### タスク更新処理の流れ
 ![タスク更新シーケンス図](plantuml/task_update_se.png)
 
+### タスク削除処理の流れ
+![タスク削除シーケンス図](plantuml/task_delete_se.png)
+
+### タスク参照処理の流れ
+![タスク参照シーケンス図](plantuml/task_select_se.png)
+
+
 ## その他
