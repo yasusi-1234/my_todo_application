@@ -130,4 +130,7 @@
 ### ログイン処理の流れ
 ![ユーザーログインシーケンス図](plantuml/login_se.png)
 
+### タスク登録処理の流れ
+![タスク登録シーケンス図](plantuml/task_register_se.png)
+
 ## その他
