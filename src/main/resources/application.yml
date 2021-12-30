@@ -1,1 +1,29 @@
+logging:
+#  file: logs/insertMaker.log
+#  config: classpath:logback-spring.xml
+  level:
+    root: info
+    org.springframework.web: info
+    org:
+      hibernate:
+        SQL: info
+        type:
+          descriptor:
+            sql:
+              BasicBinder: debug
+
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    url: ${DATABASE_URL_SPRINGBOOT:jdbc:postgresql://localhost:5432/todo}
+    username: ${DATABASE_USER:sample}
+    password: ${DATABASE_PASSWORD:password}
+
+
+
 

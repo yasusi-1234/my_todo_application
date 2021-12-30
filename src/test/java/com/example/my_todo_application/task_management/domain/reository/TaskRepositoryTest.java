@@ -1,6 +1,7 @@
 package com.example.my_todo_application.task_management.domain.reository;
 
 import com.example.my_todo_application.task_management.domain.model.AppUser;
+import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,15 +33,15 @@ class TaskRepositoryTest {
         Task actualIndex0 = actual.get(0);
         
         assertAll(
-                () -> assertEquals(1L, actual.getTaskId()),
-                () -> assertEquals("Yjyycdz5vKA", actual.getTaskName()),
-                () -> assertEquals("meMU861oMVYQhsmSj", actual.getDetail()),
-                () -> assertEquals(LocalDateTime.of(2021, 12, 29, 0, 0, 0), actual.getStartDatetime()),
-                () -> assertEquals(LocalDateTime.of(2022, 1, 29, 0, 0, 0), actual.getEndDatetime()),
-                () -> assertEquals(Importance.NOEMAL, actual.getImportance()),
-                () -> assertEquals(58 , actual.getProgress()),
-                () -> assertEquals(true , actual.getNotice()),
-                () -> assertEquals(3L , actual.getAppUser().getAppUserId())
+                () -> assertEquals(1L, actualIndex0.getTaskId()),
+                () -> assertEquals("Yjyycdz5vKA", actualIndex0.getTaskName()),
+                () -> assertEquals("meMU861oMVYQhsmSj", actualIndex0.getDetail()),
+                () -> assertEquals(LocalDateTime.of(2021, 12, 29, 0, 0, 0), actualIndex0.getStartDatetime()),
+                () -> assertEquals(LocalDateTime.of(2022, 1, 29, 0, 0, 0), actualIndex0.getEndDatetime()),
+                () -> assertEquals(Importance.NORMAL, actualIndex0.getImportance()),
+                () -> assertEquals(58 , actualIndex0.getProgress()),
+                () -> assertEquals(true , actualIndex0.isNotice()),
+                () -> assertEquals(3L , actualIndex0.getAppUser().getAppUserId())
         );
 
         assertEquals(20, actual.size());
@@ -49,7 +50,7 @@ class TaskRepositoryTest {
     @DisplayName("findByTaskIdで正しくデータが取得できる")
     @Test
     void findByIdTest() throws Exception {
-        Task actual1 = taskRepository.findById(5).orElse(null);
+        Task actual1 = taskRepository.findById(5L).orElse(null);
 
         assertAll(
                 () -> assertEquals(5L, actual1.getTaskId()),
@@ -61,7 +62,7 @@ class TaskRepositoryTest {
     @DisplayName("saveメソッドで正しく挿入される")
     @Test
     void saveTest() throws Exception {
-        Task testTask = taskRepository.findById(1).orElse(null);
+        Task testTask = taskRepository.findById(1L).orElse(null);
         // appUserIdが3のユーザー
         AppUser appUser3 = testTask.getAppUser();
 
@@ -72,7 +73,8 @@ class TaskRepositoryTest {
         assertAll(
                 () -> assertEquals("test", savedTask.getTaskName()),
                 () -> assertEquals("test", savedTask.getDetail()),
-                () -> assertEquals(false, savedTask.getProgress()),
+                () -> assertEquals(1, savedTask.getProgress()),
+                () -> assertEquals(true, savedTask.isNotice()),
                 () -> assertEquals(Importance.HIGH, savedTask.getImportance()),
                 () -> assertEquals(LocalDateTime.of(2000, 1, 1, 0, 0, 0), savedTask.getStartDatetime()),
                 () -> assertEquals(LocalDateTime.of(2001, 2, 3, 1, 2, 3), savedTask.getEndDatetime()),
@@ -104,13 +106,13 @@ class TaskRepositoryTest {
 
     private Task createTestTask(AppUser appUser) {
         Task task = new Task();
-        task.setNotice(10);
+        task.setNotice(true);
         task.setProgress(1);
         task.setTaskName("test");
         task.setDetail("test");
         task.setImportance(Importance.HIGH);
-        task.setStartDateTime(LocalDateTime.of(2000, 1, 1, 0, 0, 0));
-        task.setEndtDateTime(LocalDateTime.of(2001, 2, 3, 1, 2, 3));
+        task.setStartDatetime(LocalDateTime.of(2000, 1, 1, 0, 0, 0));
+        task.setEndDatetime(LocalDateTime.of(2001, 2, 3, 1, 2, 3));
         task.setAppUser(appUser);
         return task;
     }
