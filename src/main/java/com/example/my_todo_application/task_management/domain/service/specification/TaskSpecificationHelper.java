@@ -3,7 +3,6 @@ package com.example.my_todo_application.task_management.domain.service.specifica
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import org.springframework.data.jpa.domain.Specification;
-import org.thymeleaf.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -49,10 +48,8 @@ public final class TaskSpecificationHelper {
      */
     public static Specification<Task> betweenDatetime(LocalDateTime start, LocalDateTime end) {
         return start == null || end == null || start.isAfter(end) ? null :
-                (root, query, cb) -> {
-                    return cb.or(cb.between(root.get("startDatetime"), start, end),
-                            cb.between(root.get("endDatetime"), start, end));
-                };
+                (root, query, cb) -> cb.or(cb.between(root.get("startDatetime"), start, end),
+                        cb.between(root.get("endDatetime"), start, end));
     }
 
     /**
