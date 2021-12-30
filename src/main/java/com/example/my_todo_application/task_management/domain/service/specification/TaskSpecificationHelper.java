@@ -65,4 +65,20 @@ public final class TaskSpecificationHelper {
                 (root, query, cb) -> cb.equal(root.get("importance"), importance);
     }
 
+    /**
+     * progress(進捗度)が100のTaskを抽出するためのSpecificationを返却する
+     * @return progress(進捗度)が100のTaskを抽出するためのSpecification
+     */
+    public static Specification<Task> completedProgress(){
+        return (root, query, cb) -> cb.equal(root.get("progress"), 100);
+    }
+
+    /**
+     * progress(進捗度)が100以外のTaskを抽出するためのSpecificationを返却する
+     * @return progress(進捗度)が100以外のTaskを抽出するためのSpecification
+     */
+    public static Specification<Task> incompleteProgress(){
+        return (root, query, cb) -> cb.notEqual(root.get("progress"), 100);
+    }
+
 }
