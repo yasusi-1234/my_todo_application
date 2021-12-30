@@ -6,7 +6,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -35,17 +34,17 @@ class AppUserRepositoryTest {
     @Test
     @DisplayName("findById(1)で期待通りのAppUserを返却する")
     void findByIdTest() throws Exception{
-        AppUser actual = appUserRepository.findById(1);
+        AppUser actual = appUserRepository.findById(1L).orElse(null);
         AppUser expected = createTestAppUser();
         assertEquals(expected, actual);
     }
 
     @Test
-    @DisplayName("saveで正しく行われる(新規挿入)")
+    @DisplayName("saveが正しく行われる(新規挿入)")
     void saveAppUserTest() throws Exception {
         AppUser expectedUser = createTestAppUser();
         expectedUser.setAppUserId(null);
-        AppUser actualUser = appUserRepository.save(appUser);
+        AppUser actualUser = appUserRepository.save(expectedUser);
 
         assertEquals(expectedUser, actualUser);
 
@@ -59,19 +58,21 @@ class AppUserRepositoryTest {
     @Test
     @DisplayName("saveで正しく行われる(更新処理)")
     void updateTest() throws Exception {
-        AppUser appUser = appUserRepository.findById(1);
+        AppUser appUser = appUserRepository.findById(1L).orElse(null);
         appUser.setFirstName("aaa");
         appUser.setLastName("bbb");
         appUser.setMailAddress("xxx@xxx.xx.xx");
-        password.setPassword("pass");
+        appUser.setPassword("pass");
 
-        appUser.save(appUser);
+        appUserRepository.save(appUser);
         entityManager.flush();
 
         long expectedCount = 5L;
         long actualCount = appUserRepository.count();
 
-        AppUser actual = appUserRepository.findById(1);
+        assertEquals(expectedCount, actualCount);
+
+        AppUser actual = appUserRepository.findById(1L).orElse(null);
 
         assertAll(
                 () -> assertEquals("aaa", actual.getFirstName()),
@@ -83,13 +84,13 @@ class AppUserRepositoryTest {
 
     private AppUser createTestAppUser(){
         Role role = new Role();
-        role.setRoleId(1);
+        role.setRoleId(1L);
         role.setRoleName("ROLE_GENERAL");
         AppUser appUser = new AppUser();
         appUser.setFirstName("元気");
         appUser.setLastName("青山");
         appUser.setMailAddress("6TM8ytI8xvJU@xxx.xx.xx");
-        appUser.setAppUserId(1);
+        appUser.setAppUserId(1L);
         appUser.setPassword("password");
         appUser.setRole(role);
         return appUser;
