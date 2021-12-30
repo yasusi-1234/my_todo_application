@@ -141,4 +141,30 @@ class TaskSpecificationHelperTest {
         // appUserIdが全て2である事の確認
         actualUser2.forEach(actualObj -> assertEquals(2, actualObj.getAppUser().getAppUserId()));
     }
+
+    @Test
+    @DisplayName("completedProgressはprogressが100の要素を取得する")
+    @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void completedProgressTest() {
+        List<Task> actual = taskRepository.findAll(Specification.where(
+                TaskSpecificationHelper.fetchUser().and(
+                        TaskSpecificationHelper.completedProgress()
+                )
+        ));
+
+        assertEquals(5, actual.size());
+    }
+
+    @Test
+    @DisplayName("incompleteProgressはprogressが100以外の要素を取得する")
+    @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    void incompleteProgressTest() {
+        List<Task> actual = taskRepository.findAll(Specification.where(
+                TaskSpecificationHelper.fetchUser().and(
+                        TaskSpecificationHelper.incompleteProgress()
+                )
+        ));
+
+        assertEquals(25, actual.size());
+    }
 }
