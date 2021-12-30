@@ -1,0 +1,10 @@
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(1, 1, 100, 'Yjyycdz5vKA', 'meMU861oMVYQhsmSj', 'NORMAL', '2010-01-01 00:00:00', '2010-01-25 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(0, 1, 4, 'omTWtJq', 'ldAtNGJ8AJFM0H', 'HIGH', '2010-01-05 00:00:00', '2010-01-29 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(1, 1, 95, 'cRz7CPzO4DcWF9R1Yi', 'CZH5wba0Xb1obT3I', 'HIGH', '2010-02-01 00:00:00', '2010-02-15 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(0, 1, 100, 'llfJxjqp', 'Z5LlJstgbM22', 'VERY_HIGH', '2010-02-05 00:00:00', '2010-02-14 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(0, 1, 48, 'LLweBTirb6ms', 'YjyOiR', 'LOW', '2010-02-05 00:00:00', '2010-02-15 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(0, 2, 100, '0OLNL2C0gsl5hMNN', 'W1zOYSqQ', 'LOW', '2010-03-01 00:00:00', '2010-03-15 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(1, 2, 100, 'cowhgvKF3cv2', 'FjjtmRalt', 'NORMAL', '2010-03-01 00:00:00', '2010-03-18 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(0, 2, 2, 'RNx095v4aCtuO', '6ae1W2', 'LOW', '2010-03-05 00:00:00', '2010-03-14 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(0, 2, 100, 'RTytr4ZvYVK', 'm64AgZZLjDcNSk', 'VERY_LOW', '2010-03-05 00:00:00', '2010-03-18 00:00:00');
+INSERT INTO task (notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(0, 2, 23, 'RTytr4ZvYVK', 'm64AgZZLjDcNSk', 'VERY_LOW', '2010-03-01 00:00:00', '2010-03-05 00:00:00');
