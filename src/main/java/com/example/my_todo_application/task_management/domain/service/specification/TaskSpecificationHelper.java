@@ -3,7 +3,6 @@ package com.example.my_todo_application.task_management.domain.service.specifica
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import org.springframework.data.jpa.domain.Specification;
-import org.thymeleaf.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -49,10 +48,8 @@ public final class TaskSpecificationHelper {
      */
     public static Specification<Task> betweenDatetime(LocalDateTime start, LocalDateTime end) {
         return start == null || end == null || start.isAfter(end) ? null :
-                (root, query, cb) -> {
-                    return cb.or(cb.between(root.get("startDatetime"), start, end),
-                            cb.between(root.get("endDatetime"), start, end));
-                };
+                (root, query, cb) -> cb.or(cb.between(root.get("startDatetime"), start, end),
+                        cb.between(root.get("endDatetime"), start, end));
     }
 
     /**
@@ -63,6 +60,22 @@ public final class TaskSpecificationHelper {
     public static Specification<Task> equalImportance(Importance importance){
         return importance == null ? null :
                 (root, query, cb) -> cb.equal(root.get("importance"), importance);
+    }
+
+    /**
+     * progress(進捗度)が100のTaskを抽出するためのSpecificationを返却する
+     * @return progress(進捗度)が100のTaskを抽出するためのSpecification
+     */
+    public static Specification<Task> completedProgress(){
+        return (root, query, cb) -> cb.equal(root.get("progress"), 100);
+    }
+
+    /**
+     * progress(進捗度)が100以外のTaskを抽出するためのSpecificationを返却する
+     * @return progress(進捗度)が100以外のTaskを抽出するためのSpecification
+     */
+    public static Specification<Task> incompleteProgress(){
+        return (root, query, cb) -> cb.notEqual(root.get("progress"), 100);
     }
 
 }
