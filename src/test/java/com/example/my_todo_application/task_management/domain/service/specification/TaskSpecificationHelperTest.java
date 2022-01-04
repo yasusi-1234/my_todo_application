@@ -4,6 +4,7 @@ import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import com.example.my_todo_application.task_management.domain.reository.TaskRepository;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
@@ -142,29 +143,54 @@ class TaskSpecificationHelperTest {
         actualUser2.forEach(actualObj -> assertEquals(2, actualObj.getAppUser().getAppUserId()));
     }
 
-    @Test
-    @DisplayName("completedProgressはprogressが100の要素を取得する")
-    @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void completedProgressTest() {
-        List<Task> actual = taskRepository.findAll(Specification.where(
-                TaskSpecificationHelper.fetchUser().and(
-                        TaskSpecificationHelper.completedProgress()
-                )
-        ));
+    @Nested
+    @DisplayName("progressメソッドのテスト")
+    class progressTest {
 
-        assertEquals(5, actual.size());
-    }
+        @Test
+        @DisplayName("ProgressがRegisterの場合DBのProgressが100の要素を返却するSpecificationを返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void progressRegisterTest() {
+            Progress progress = Progress.REGISTER;
 
-    @Test
-    @DisplayName("incompleteProgressはprogressが100以外の要素を取得する")
-    @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void incompleteProgressTest() {
-        List<Task> actual = taskRepository.findAll(Specification.where(
-                TaskSpecificationHelper.fetchUser().and(
-                        TaskSpecificationHelper.incompleteProgress()
-                )
-        ));
+            List<Task> actual = taskRepository.findAll(Specification.where(
+                    TaskSpecificationHelper.fetchUser().and(
+                            TaskSpecificationHelper.progress(progress)
+                    )
+            ));
 
-        assertEquals(25, actual.size());
+            assertEquals(5, actual.size());
+        }
+
+        @Test
+        @DisplayName("ProgressがWORKINGの場合DBのProgressが1以上~100未満の要素を返却するSpecificationを返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void progressRegisterTest() {
+            Progress progress = Progress.WORKING;
+
+            List<Task> actual = taskRepository.findAll(Specification.where(
+                    TaskSpecificationHelper.fetchUser().and(
+                            TaskSpecificationHelper.progress(progress)
+                    )
+            ));
+
+            assertEquals(23, actual.size());
+        }
+
+        @Test
+        @DisplayName("ProgressがNOTSTERTの場合DBのProgressが0の要素を返却するSpecificationを返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void progressRegisterTest() {
+            Progress progress = Progress.NOTSTERT;
+
+            List<Task> actual = taskRepository.findAll(Specification.where(
+                    TaskSpecificationHelper.fetchUser().and(
+                            TaskSpecificationHelper.progress(progress)
+                    )
+            ));
+
+            assertEquals(2, actual.size());
+        }
+
     }
 }
