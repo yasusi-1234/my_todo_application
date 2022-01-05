@@ -27,6 +27,18 @@ class TaskSpecificationHelperTest {
     private TaskRepository taskRepository;
 
     @Test
+    @DisplayName("likeTaskNameが指定したタスク名を含む要素を返却する")
+    void likeTaskNameTest() {
+        long expectedCount = 7L;
+        long actual = taskRepository.findAll(Specification.where(
+                TaskSpecificationHelper.fetchUser().and(
+                        TaskSpecificationHelper.likeTaskName("v")
+                )
+        ));
+        assertEquals(expectedCount, actual);
+    }
+
+    @Test
     @DisplayName("equalAppUserIdは正しくユーザーのIDごとの要素を取得する")
     void equalAppUserIdTest() {
         // 1は5件
