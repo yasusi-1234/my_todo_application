@@ -29,7 +29,7 @@ class TaskSpecificationHelperTest {
     @Test
     @DisplayName("likeTaskNameが指定したタスク名を含む要素を返却する")
     void likeTaskNameTest() {
-        int expectedCount = 7;
+        int expectedCount = 6;
         int actual = taskRepository.findAll(Specification.where(
                 TaskSpecificationHelper.fetchUser().and(
                         TaskSpecificationHelper.likeTaskName("v")
