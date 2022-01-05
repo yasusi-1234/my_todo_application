@@ -7,12 +7,14 @@ import com.example.my_todo_application.task_management.domain.reository.TaskRepo
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -23,6 +25,7 @@ import static org.mockito.Mockito.*;
 @DisplayName("TaskServiceImplクラスのテスト")
 class TaskServiceImplTest {
 
+    @Autowired
     private TaskServiceImpl taskService;
 
     @MockBean
@@ -33,7 +36,8 @@ class TaskServiceImplTest {
     void findByTaskIdTest() {
         // setUp
         Task testTask = createTask();
-        doReturn(testTask).when(taskRepository).findById(anyLong());
+        Optional<Task> testTaskOpt = Optional.of(testTask);
+        doReturn(testTaskOpt).when(taskRepository).findById(anyLong());
 
         Task actual = taskService.findByTaskId(1L);
 
