@@ -1,8 +1,10 @@
 package com.example.my_todo_application.task_management.domain.service.specification;
 
+import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDateTime;
 
@@ -25,6 +27,16 @@ public final class TaskSpecificationHelper {
             }
             return query.getRestriction();
         };
+    }
+
+    /**
+     * 引数で指定されたタスク名を含むタスクを返却するSpecificationを生成する
+     * @param taskName タスク名
+     * @return タスク名を含むタスクを返却するSpecification
+     */
+    public static Specification<Task> likeTaskName(String taskName) {
+        return StringUtils.hasText(taskName) ? (root, query, cb) -> cb.like(root.get("taskName"), "%" + taskName + "%")
+        : null;
     }
 
     /**
@@ -66,16 +78,19 @@ public final class TaskSpecificationHelper {
      * progress(進捗度)が100のTaskを抽出するためのSpecificationを返却する
      * @return progress(進捗度)が100のTaskを抽出するためのSpecification
      */
-    public static Specification<Task> completedProgress(){
-        return (root, query, cb) -> cb.equal(root.get("progress"), 100);
-    }
-
-    /**
-     * progress(進捗度)が100以外のTaskを抽出するためのSpecificationを返却する
-     * @return progress(進捗度)が100以外のTaskを抽出するためのSpecification
-     */
-    public static Specification<Task> incompleteProgress(){
-        return (root, query, cb) -> cb.notEqual(root.get("progress"), 100);
+    public static Specification<Task> progress(Progress progress){
+        switch (progress){
+            case REGISTER:
+                return (root, query, cb) ->
+                        cb.equal(root.get("progress"), 100);
+            case WORKING:
+                return (root, query, cb) ->
+                        cb.between(root.get("progress"), 1, 99);
+            case NOT_START:
+                return (root, query, cb) ->
+                        cb.equal(root.get("progress"), 0);
+        }
+        return null;
     }
 
 }

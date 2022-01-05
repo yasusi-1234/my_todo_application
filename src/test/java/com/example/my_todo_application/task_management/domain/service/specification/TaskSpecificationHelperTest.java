@@ -1,5 +1,6 @@
 package com.example.my_todo_application.task_management.domain.service.specification;
 
+import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import com.example.my_todo_application.task_management.domain.reository.TaskRepository;
@@ -24,6 +25,18 @@ class TaskSpecificationHelperTest {
 
     @Autowired
     private TaskRepository taskRepository;
+
+    @Test
+    @DisplayName("likeTaskNameが指定したタスク名を含む要素を返却する")
+    void likeTaskNameTest() {
+        int expectedCount = 6;
+        int actual = taskRepository.findAll(Specification.where(
+                TaskSpecificationHelper.fetchUser().and(
+                        TaskSpecificationHelper.likeTaskName("v")
+                )
+        )).size();
+        assertEquals(expectedCount, actual);
+    }
 
     @Test
     @DisplayName("equalAppUserIdは正しくユーザーのIDごとの要素を取得する")
@@ -145,7 +158,7 @@ class TaskSpecificationHelperTest {
 
     @Nested
     @DisplayName("progressメソッドのテスト")
-    class progressTest {
+    class ProgressTest {
 
         @Test
         @DisplayName("ProgressがRegisterの場合DBのProgressが100の要素を返却するSpecificationを返却する")
@@ -165,7 +178,7 @@ class TaskSpecificationHelperTest {
         @Test
         @DisplayName("ProgressがWORKINGの場合DBのProgressが1以上~100未満の要素を返却するSpecificationを返却する")
         @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-        void progressRegisterTest() {
+        void progressWorkingTest() {
             Progress progress = Progress.WORKING;
 
             List<Task> actual = taskRepository.findAll(Specification.where(
@@ -180,8 +193,8 @@ class TaskSpecificationHelperTest {
         @Test
         @DisplayName("ProgressがNOTSTERTの場合DBのProgressが0の要素を返却するSpecificationを返却する")
         @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-        void progressRegisterTest() {
-            Progress progress = Progress.NOTSTERT;
+        void progressNotStartTest() {
+            Progress progress = Progress.NOT_START;
 
             List<Task> actual = taskRepository.findAll(Specification.where(
                     TaskSpecificationHelper.fetchUser().and(
