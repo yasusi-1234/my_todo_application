@@ -1,5 +1,6 @@
 package com.example.my_todo_application.task_management.domain.service;
 
+import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import com.example.my_todo_application.task_management.domain.reository.TaskRepository;
@@ -90,7 +91,7 @@ class TaskServiceImplTest {
 
         List<Task> actual =
                 taskService.findTasksOf(
-                        "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1), Importance.NORMAL, 10);
+                        "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1), Importance.NORMAL, Progress.REGISTER);
         assertEquals(tasks, actual);
 
     }
