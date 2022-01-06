@@ -86,6 +86,20 @@ class TaskRegisterFormTest {
     @DisplayName("日付関連のテスト")
     @Nested
     class StartAndEndDateTimeTest {
+
+        @DisplayName("正常系のテスト")
+        @Test
+        void normalStartAndEndTime() {
+            // setup
+            TaskRegisterForm form = createNormalTaskRegisterForm();
+            form.setStartDateTime(LocalDateTime.of(2010, 1, 1, 0, 0, 0));
+            form.setEndDateTime(LocalDateTime.of(2010, 1, 2, 0, 0, 0));
+            BindingResult bindingResult = new BindException(form, "taskRegisterFrom");
+            // テスト実施
+            validator.validate(form, bindingResult);
+            assertFalse(bindingResult.hasFieldErrors("startDateTime"));
+        }
+
         @DisplayName("日付の開始時刻より終了時刻が前の場合エラーになる")
         @Test
         void beforeEndTimeOfStartTime() {
@@ -96,7 +110,7 @@ class TaskRegisterFormTest {
             BindingResult bindingResult = new BindException(form, "taskRegisterFrom");
             // テスト実施
             validator.validate(form, bindingResult);
-            assertTrue(bindingResult.hasFieldErrors("startDateTime"));
+            assertFalse(bindingResult.hasFieldErrors("startDateTime"));
         }
 
         @DisplayName("日付の開始時刻と終了時刻が同じの場合エラーになる")
@@ -109,7 +123,7 @@ class TaskRegisterFormTest {
             BindingResult bindingResult = new BindException(form, "taskRegisterFrom");
             // テスト実施
             validator.validate(form, bindingResult);
-            assertTrue(bindingResult.hasFieldErrors("startDateTime"));
+            assertFalse(bindingResult.hasFieldErrors("startDateTime"));
         }
     }
 
