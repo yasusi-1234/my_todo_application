@@ -101,7 +101,7 @@ class TaskRegisterFormTest {
 
         @DisplayName("日付の開始時刻と終了時刻が同じの場合エラーになる")
         @Test
-        void beforeEndTimeOfStartTime() {
+        void sameEndTimeOfStartTime() {
             // setup
             TaskRegisterForm form = createNormalTaskRegisterForm();
             form.setStartDateTime(LocalDateTime.of(2010, 1, 1, 0, 0, 0));
