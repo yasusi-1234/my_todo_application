@@ -61,6 +61,38 @@ class UserRegisterFormTest {
             System.out.println(bindingResult.getFieldError("firstName").getDefaultMessage());
         }
     }
+    
+    @DisplayName("lastNameのテスト")
+    @Nested
+    class LastName {
+        @Test
+        @DisplayName("lastNameが空の場合エラーになる")
+        void lastNameIsEmpty() {
+            // setup
+            UserRegisterForm form = testTaskRegisterForm();
+            form.setLastName("");
+            BindingResult bindingResult = new BindException(form, "userRegisterForm");
+
+            validator.validate(form, bindingResult);
+
+            assertTrue(bindingResult.hasFieldErrors("lastName"));
+            System.out.println(bindingResult.getFieldError("lastName").getDefaultMessage());
+        }
+
+        @Test
+        @DisplayName("lastNameがnullの場合エラーになる")
+        void lastNameIsNull() {
+            // setup
+            UserRegisterForm form = testTaskRegisterForm();
+            form.setLastName(null);
+            BindingResult bindingResult = new BindException(form, "userRegisterForm");
+
+            validator.validate(form, bindingResult);
+
+            assertTrue(bindingResult.hasFieldErrors("lastName"));
+            System.out.println(bindingResult.getFieldError("lastName").getDefaultMessage());
+        }
+    }
 
     private TaskRegisterForm testTaskRegisterForm() {
         TaskRegisterForm form = new TaskRegisterForm();
