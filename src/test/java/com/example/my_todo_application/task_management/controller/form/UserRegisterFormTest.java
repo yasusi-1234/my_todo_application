@@ -24,7 +24,7 @@ class UserRegisterFormTest {
     @Test
     void userRegisterFromOfNoProblem() {
         // setup
-        TaskRegisterForm form = testTaskRegisterForm();
+        UserRegisterForm form = testUserRegisterForm();
         BindingResult bindingResult = new BindException(form, "userRegisterForm");
         // action
         validator.validate(form, bindingResult);
@@ -39,7 +39,7 @@ class UserRegisterFormTest {
         @DisplayName("firstNameが空の場合エラーになる")
         void firstNameIsEmpty() {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setFirstName("");
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -53,7 +53,7 @@ class UserRegisterFormTest {
         @DisplayName("firstNameがnullの場合エラーになる")
         void firstNameIsNull() {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setFirstName(null);
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -71,7 +71,7 @@ class UserRegisterFormTest {
         @DisplayName("lastNameが空の場合エラーになる")
         void lastNameIsEmpty() {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setLastName("");
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -85,7 +85,7 @@ class UserRegisterFormTest {
         @DisplayName("lastNameがnullの場合エラーになる")
         void lastNameIsNull() {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setLastName(null);
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -105,7 +105,7 @@ class UserRegisterFormTest {
         @DisplayName("mailAddressがメール形式でない場合エラーになる")
         void noneMailAddress(String mailAddress) {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setMailAddress(mailAddress);
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -119,7 +119,7 @@ class UserRegisterFormTest {
         @DisplayName("mailAddressがnullの場合エラーになる")
         void mailAddressIsNull() {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setMailAddress(null);
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -139,7 +139,7 @@ class UserRegisterFormTest {
         @DisplayName("passwordが8文字未満の場合エラーになる")
         void nonePassword(String password) {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setPassword(password);
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -153,7 +153,7 @@ class UserRegisterFormTest {
         @DisplayName("passwordがnullの場合エラーになる")
         void passwordIsNull() {
             // setup
-            UserRegisterForm form = testTaskRegisterForm();
+            UserRegisterForm form = testUserRegisterForm();
             form.setPassword(null);
             BindingResult bindingResult = new BindException(form, "userRegisterForm");
 
@@ -164,8 +164,8 @@ class UserRegisterFormTest {
         }
     }
 
-    private TaskRegisterForm testTaskRegisterForm() {
-        TaskRegisterForm form = new TaskRegisterForm();
+    private UserRegisterForm testUserRegisterForm() {
+        UserRegisterForm form = new UserRegisterForm();
         form.setFirstName("test");
         form.setLastName("test");
         form.setMailAddress("test@xxx.xx.xx");
