@@ -188,6 +188,9 @@
 
 ## クラス図
 
+### ログイン・ユーザー登録関連のクラス図
+![ログイン・ユーザー登録関連のクラス図](plantuml/login_user_register_class.png)
+
 ### タスク管理系のクラス図
 ![タスク処理関連のクラス図](plantuml/task_relation_class.png)
 
