@@ -17,8 +17,10 @@ public class UserRegisterForm {
     private String lastName;
     /** メールアドレス */
     @Email
+    @NotBlank
     private String mailAddress;
     /** パスワード */
     @Size(min = 8)
+    @NotBlank
     private String password;
 }
