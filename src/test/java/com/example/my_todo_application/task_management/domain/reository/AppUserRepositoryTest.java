@@ -2,8 +2,11 @@ package com.example.my_todo_application.task_management.domain.reository;
 
 import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.model.Role;
+import org.junit.jupiter.api.Assumptions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
@@ -80,6 +83,25 @@ class AppUserRepositoryTest {
                 () -> assertEquals("xxx@xxx.xx.xx", actual.getMailAddress()),
                 () -> assertEquals("pass", actual.getPassword())
         );
+    }
+
+    @DisplayName("findByMailAddressAndPasswordメソッドは正しく1件の情報を取得できる")
+    @ParameterizedTest
+    @CsvSource({"6TM8ytI8xvJU@xxx.xx.xx, password",
+    "L3g9Pmpu4MUyY@xxx.xx.xx, password",
+    "null, password"})
+    void findByMailAddressAndPasswordTest(String mail, String pass){
+        AppUser actual = appUserRepository.findByMailAddressAndPassword(mail, pass);
+
+        Assumptions.assumingThat(mail.equals("null"),
+                () -> assertNull(actual));
+
+        Assumptions.assumingThat(!mail.equals("null"),
+                () -> assertAll(
+                        () -> assertNotNull(actual),
+                        () -> assertEquals(mail, actual.getMailAddress())
+                ));
+
     }
 
     private AppUser createTestAppUser(){
