@@ -15,6 +15,9 @@ logging:
 
 spring:
   jpa:
+    # ddl-autoNoneを設定しないとファイルからのデータ読み込みが無視される？
+    hibernate:
+      ddl-auto: none
     database: POSTGRESQL
     properties:
       hibernate:
@@ -23,6 +26,11 @@ spring:
     url: ${DATABASE_URL_SPRINGBOOT:jdbc:postgresql://localhost:5432/todo}
     username: ${DATABASE_USER:sample}
     password: ${DATABASE_PASSWORD:password}
+  sql:
+    init:
+      enable: true
+      schema-locations: classpath:schema.sql
+      data-locations: classpath:data.sql
 
 
 
