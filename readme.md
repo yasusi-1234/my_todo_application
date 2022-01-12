@@ -36,7 +36,7 @@
 
 機能名 機能概要 機能分類 実装方法
 
-### 要件の洗い出し
+### 要件等の洗い出し
 <table>
   <tr>
     <th>機能名</th>
@@ -107,17 +107,20 @@
   <tr>
     <th>画面名</th>
     <th>詳細</th>
+    <th>ファイル名</th>
   </tr>
   <tr>
     <td>ログイン画面</td>
     <td>ログインの画面</td>
+    <td>login.html</td>
   </tr>
   <tr>
     <td>ユーザー登録画面</td>
     <td>ユーザーが新規登録する際の画面</td>
+    <td>user-register.html</td>
   </tr>
   <tr>
-    <td>ホーム画面</td>
+    <td>タスクホーム画面</td>
     <td>
       アプリケーションのホーム画面
       <br>
@@ -125,10 +128,12 @@
       <br>
       タスク検索画面
     </td>
+    <td>task-home.html</td>
   </tr>
   <tr>
-    <td>タスク登録画面</td>
+    <td>タスク登録・更新画面</td>
     <td>タスクを新規に登録及び更新する画面</td>
+    <td>task-register.html</td>
   </tr>
 </table>
 
