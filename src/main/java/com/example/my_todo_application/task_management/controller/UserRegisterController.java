@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -34,6 +35,15 @@ public class UserRegisterController {
             BindingResult bindingResult,
             UriComponentsBuilder uriBuilder,
             RedirectAttributes redirectAttributes){
-        return "user/user-register";
+
+        if(bindingResult.hasErrors()){
+            return "user/user-register";
+        }
+
+        String uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
+                .withMethodName(LoginController.class, "getLogin")
+                .build().toString();
+
+        return "redirect:" + uri;
     }
 }
