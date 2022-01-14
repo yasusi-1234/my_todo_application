@@ -85,6 +85,17 @@ class AppUserRepositoryTest {
         );
     }
 
+    @DisplayName("findByMailAddressメソッドで期待したユーザーが取得できる")
+    @ParameterizedTest
+    @CsvSource({"6TM8ytI8xvJU@xxx.xx.xx",
+    "L3g9Pmpu4MUyY@xxx.xx.xx",
+    "MV2i0Y9acmk6cnS@xxx.xx.xx"})
+    void findByMailAddressTest(String mailAddress) throws Exception {
+        AppUser actual = appUserRepository.findByMailAddress(mailAddress);
+
+        assertEquals(mailAddress, actual.getMailAddress());
+    }
+
     @DisplayName("findByMailAddressAndPasswordメソッドは正しく1件の情報を取得できる")
     @ParameterizedTest
     @CsvSource({"6TM8ytI8xvJU@xxx.xx.xx, password",
