@@ -3,8 +3,6 @@ package com.example.my_todo_application.task_management.controller;
 import com.example.my_todo_application.task_management.controller.form.UserRegisterForm;
 import com.example.my_todo_application.task_management.domain.service.UserRegisterService;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -40,10 +38,22 @@ public class UserRegisterController {
             return "user/user-register";
         }
 
+        userRegisterService.saveAppUser(
+            userRegisterForm.getFirstName(),
+            userRegisterForm.getLastName(),
+            userRegisterForm.getMailAddress(),
+            userRegisterForm.getPassword()
+        );
+
+        // リダイレクト先の指定
         String uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
                 .withMethodName(LoginController.class, "getLogin")
                 .build().toString();
 
+        redirectAttributes.addFlashAttribute("complete", "登録が完了しました");
+
         return "redirect:" + uri;
     }
+
+
 }
