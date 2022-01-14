@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @DisplayName("UserRegisterServiceImplクラスのテスト")
-@SpringBootTest
+@SpringBootTest(classes = UserRegisterServiceImpl.class)
 class UserRegisterServiceImplTest {
 
     @Autowired
@@ -51,7 +51,6 @@ class UserRegisterServiceImplTest {
 
     private AppUser testAppUser() {
         AppUser appUser = new AppUser();
-        appUser.setAppUserId(1L);
         appUser.setFirstName("test");
         appUser.setLastName("test");
         appUser.setPassword("password");
