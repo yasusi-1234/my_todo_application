@@ -1,7 +1,6 @@
 package com.example.my_todo_application.task_management.controller;
 
 import com.example.my_todo_application.task_management.controller.form.UserRegisterForm;
-import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.service.UserRegisterService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
