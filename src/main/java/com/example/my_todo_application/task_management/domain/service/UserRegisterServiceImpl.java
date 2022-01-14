@@ -1,7 +1,9 @@
 package com.example.my_todo_application.task_management.domain.service;
 
 import com.example.my_todo_application.task_management.domain.model.AppUser;
+import com.example.my_todo_application.task_management.domain.model.Role;
 import com.example.my_todo_application.task_management.domain.reository.AppUserRepository;
+import com.example.my_todo_application.task_management.domain.reository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +14,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class UserRegisterServiceImpl implements UserRegisterService{
 
     private final AppUserRepository appUserRepository;
+
+    private final RoleRepository roleRepository;
 
     /**
      * 新規にユーザーをデータベースに登録するメソッド
@@ -30,6 +34,10 @@ public class UserRegisterServiceImpl implements UserRegisterService{
         appUser.setMailAddress(mailAddress);
         // 後にパスワードエンコーダ―で変更する
         appUser.setPassword(password);
+
+        Role role = roleRepository.findByRoleName("ROLE_GENERAL");
+
+        appUser.setRole(role);
 
         return appUserRepository.save(appUser);
     }
