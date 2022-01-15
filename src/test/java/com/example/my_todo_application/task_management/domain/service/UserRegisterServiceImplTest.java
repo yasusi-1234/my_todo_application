@@ -6,7 +6,6 @@ import com.example.my_todo_application.task_management.domain.reository.AppUserR
 import com.example.my_todo_application.task_management.domain.reository.RoleRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;

@@ -12,6 +12,9 @@ import java.time.LocalDateTime;
 
 @Data
 public class TaskRegisterForm {
+
+    /** タスクID */
+    private Long taskId;
     /** タスク名 */
     @NotBlank
     private String taskName;
