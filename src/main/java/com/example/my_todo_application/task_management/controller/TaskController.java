@@ -12,10 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -34,15 +31,15 @@ public class TaskController {
     }
 
     @ModelAttribute("importance")
-    public Importance[] importance(){
+    public Importance[] importance() {
         return Importance.values();
     }
 
     @GetMapping("home")
     public String getTaskHome(
             @ModelAttribute("taskSearchForm") TaskSearchForm taskSearchForm,
-            @ModelAttribute("TaskRegisterFrom")TaskRegisterForm taskRegisterForm,
-            Model model){
+            @ModelAttribute("TaskRegisterFrom") TaskRegisterForm taskRegisterForm,
+            Model model) {
 
         return "task/task-home";
     }
@@ -55,8 +52,8 @@ public class TaskController {
             UriComponentsBuilder uriComponentsBuilder,
             RedirectAttributes redirectAttributes,
             Model model
-    ){
-        if(bindingResult.hasErrors()){
+    ) {
+        if (bindingResult.hasErrors()) {
             return "task/task-home";
         }
 
@@ -72,14 +69,30 @@ public class TaskController {
         return "redirect:" + uri;
     }
 
+    @PostMapping("delete")
+    public String postDeleteTask(
+            @RequestParam("taskId") Long taskId,
+            UriComponentsBuilder uriComponentsBuilder,
+            RedirectAttributes redirectAttributes) {
+        taskService.deleteByTaskId(taskId);
+
+        redirectAttributes.addFlashAttribute("complete", "タスクの削除が完了しました");
+
+        String uri = MvcUriComponentsBuilder.relativeTo(uriComponentsBuilder)
+                .withMethodName(this.getClass(), "getTaskHome").build().toString();
+
+        return "redirect:" + uri;
+    }
+
 
     /**
      * タスクフォームとユーザー情報からタスクオブジェクトを生成し返却する
-     * @param form タスク登録フォーム
+     *
+     * @param form    タスク登録フォーム
      * @param appUser アプリケーションユーザー
      * @return フォームとユーザー情報から作成されたタスクオブジェクト
      */
-    private Task makeTaskFromForm(TaskRegisterForm form, AppUser appUser){
+    private Task makeTaskFromForm(TaskRegisterForm form, AppUser appUser) {
         Task task = new Task();
         task.setTaskId(form.getTaskId());
         task.setTaskName(form.getTaskName());
