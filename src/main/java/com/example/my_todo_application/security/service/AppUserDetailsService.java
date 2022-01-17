@@ -4,8 +4,6 @@ import com.example.my_todo_application.security.model.AppUserDetails;
 import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +14,7 @@ import org.springframework.util.StringUtils;
 @RequiredArgsConstructor
 public class AppUserDetailsService implements UserDetailsService {
 
-    private AppUserRepository userRepository;
+    private final AppUserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
