@@ -3,11 +3,11 @@
 
 INSERT INTO role (role_name) VALUES('ROLE_GENERAL');
 
-INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('青山', '元気', '6TM8ytI8xvJU@xxx.xx.xx', 1, 1, 'password');
-INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('石田', '真由子', 'L3g9Pmpu4MUyY@xxx.xx.xx', 2, 1, 'password');
-INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('永田', '喜代', 'MV2i0Y9acmk6cnS@xxx.xx.xx', 3, 1, 'password');
-INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('古谷', '兼子', 'Rj0t6D3n51SLT@xxx.xx.xx', 4, 1, 'password');
-INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('加藤', '左京', 'WgY0lw5yPaF97m1@xxx.xx.xx', 5, 1, 'password');
+INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('青山', '元気', '6TM8ytI8xvJU@xxx.xx.xx', 1, 1, '$2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe');
+INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('石田', '真由子', 'L3g9Pmpu4MUyY@xxx.xx.xx', 2, 1, '$2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe');
+INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('永田', '喜代', 'MV2i0Y9acmk6cnS@xxx.xx.xx', 3, 1, '$2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe');
+INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('古谷', '兼子', 'Rj0t6D3n51SLT@xxx.xx.xx', 4, 1, '$2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe');
+INSERT INTO app_user (last_name, first_name, mail_address, app_user_id, role_id, password) VALUES('加藤', '左京', 'WgY0lw5yPaF97m1@xxx.xx.xx', 5, 1, '$2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe');
 
 INSERT INTO task (task_id, notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(1, 1, 3, 58, 'Yjyycdz5vKA', 'meMU861oMVYQhsmSj', 'NORMAL', '2021-12-29 00:00:00', '2022-01-29 00:00:00');
 INSERT INTO task (task_id, notice,  app_user_id, progress, task_name, detail, importance, start_datetime, end_datetime) VALUES(2, 0, 3, 4, 'omTWtJq', 'ldAtNGJ8AJFM0H', 'NORMAL', '2021-12-29 00:00:00', '2022-01-29 00:00:00');
