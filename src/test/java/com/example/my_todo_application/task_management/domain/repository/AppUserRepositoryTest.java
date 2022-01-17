@@ -1,4 +1,4 @@
-package com.example.my_todo_application.task_management.domain.reository;
+package com.example.my_todo_application.task_management.domain.repository;
 
 import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.model.Role;

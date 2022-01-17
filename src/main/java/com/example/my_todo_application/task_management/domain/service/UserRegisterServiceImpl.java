@@ -2,8 +2,8 @@ package com.example.my_todo_application.task_management.domain.service;
 
 import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.model.Role;
-import com.example.my_todo_application.task_management.domain.reository.AppUserRepository;
-import com.example.my_todo_application.task_management.domain.reository.RoleRepository;
+import com.example.my_todo_application.task_management.domain.repository.AppUserRepository;
+import com.example.my_todo_application.task_management.domain.repository.RoleRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
