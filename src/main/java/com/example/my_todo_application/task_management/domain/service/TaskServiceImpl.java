@@ -3,7 +3,7 @@ package com.example.my_todo_application.task_management.domain.service;
 import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
-import com.example.my_todo_application.task_management.domain.reository.TaskRepository;
+import com.example.my_todo_application.task_management.domain.repository.TaskRepository;
 import com.example.my_todo_application.task_management.domain.service.specification.TaskSpecificationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
