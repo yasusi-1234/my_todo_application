@@ -2,23 +2,24 @@ package com.example.my_todo_application.security.service;
 
 import com.example.my_todo_application.security.model.AppUserDetails;
 import com.example.my_todo_application.task_management.domain.model.AppUser;
-import com.example.my_todo_application.task_management.domain.reository.AppUserRepository;
+import com.example.my_todo_application.task_management.domain.repository.AppUserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
 
-@Component
+@Component("appUserDetailsService")
 @RequiredArgsConstructor
 public class AppUserDetailsService implements UserDetailsService {
 
-    private final AppUserRepository userRepository;
+    private AppUserRepository userRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-
         if(!StringUtils.hasText(username)){
             throw new UsernameNotFoundException("ユーザー名が指定されていません");
         }
