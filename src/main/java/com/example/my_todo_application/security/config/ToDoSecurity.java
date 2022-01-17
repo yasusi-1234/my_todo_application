@@ -1,5 +1,6 @@
 package com.example.my_todo_application.security.config;
 
+import com.example.my_todo_application.security.service.AppUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -40,8 +41,8 @@ public class ToDoSecurity extends WebSecurityConfigurerAdapter {
 
         // ログインの設定
         http.formLogin()
-                .loginPage("/login/login")
-                .loginProcessingUrl("/login/login")
+                .loginPage("/login")
+                .loginProcessingUrl("/login")
                 // ユーザーのパラメータ名
                 .usernameParameter("username")
                 // ユーザーのパスワード
@@ -49,7 +50,7 @@ public class ToDoSecurity extends WebSecurityConfigurerAdapter {
                 // ログイン成功時の遷移先
                 .defaultSuccessUrl("/task/home", true)
                 // ログイン失敗
-                .failureUrl("/login/login?error=true");
+                .failureUrl("/login?error=true");
 
         // ログアウトの設定
         http.logout()
@@ -65,7 +66,7 @@ public class ToDoSecurity extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(
             AuthenticationManagerBuilder builder,
-            @Qualifier("appUserDetailsService")UserDetailsService userDetailsService,
+            @Qualifier("appUserDetailsService") UserDetailsService userDetailsService,
             PasswordEncoder encoder) throws Exception {
         // ログイン処理時にユーザー情報を、DBから取得
         builder.eraseCredentials(true).userDetailsService(userDetailsService).passwordEncoder(encoder);
