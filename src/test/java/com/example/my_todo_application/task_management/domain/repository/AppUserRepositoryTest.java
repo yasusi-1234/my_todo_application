@@ -1,5 +1,6 @@
 package com.example.my_todo_application.task_management.domain.repository;
 
+import com.example.my_todo_application.security.config.ToDoSecurity;
 import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.model.Role;
 import org.junit.jupiter.api.Assumptions;
@@ -9,6 +10,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -98,8 +101,8 @@ class AppUserRepositoryTest {
 
     @DisplayName("findByMailAddressAndPasswordメソッドは正しく1件の情報を取得できる")
     @ParameterizedTest
-    @CsvSource({"6TM8ytI8xvJU@xxx.xx.xx, password",
-    "L3g9Pmpu4MUyY@xxx.xx.xx, password",
+    @CsvSource({"6TM8ytI8xvJU@xxx.xx.xx, $2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe",
+    "L3g9Pmpu4MUyY@xxx.xx.xx, $2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe",
     "null, password"})
     void findByMailAddressAndPasswordTest(String mail, String pass){
         AppUser actual = appUserRepository.findByMailAddressAndPassword(mail, pass);
