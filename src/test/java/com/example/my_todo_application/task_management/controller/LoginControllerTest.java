@@ -12,8 +12,10 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
+
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.csrf;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @DisplayName("ログインコントローラーのテスト")
 @WebMvcTest(controllers = LoginController.class,
@@ -40,20 +42,50 @@ class LoginControllerTest {
                 userDetailsServiceBeanName = "appUserDetailsService")
         @Test
         void getLoginUserTest() throws Exception {
-            mockMvc.perform(MockMvcRequestBuilders.get("/login"))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(MockMvcResultMatchers.view().name("login/login"));
+            mockMvc.perform(get("/login"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("login/login"));
         }
 
         @DisplayName("誰でもアクセス可能")
         @WithAnonymousUser
         @Test
         void getLoginAnonymousTest() throws Exception {
-            mockMvc.perform(MockMvcRequestBuilders.get("/login"))
-                    .andExpect(MockMvcResultMatchers.status().isOk())
-                    .andExpect(MockMvcResultMatchers.view().name("login/login"));
+            mockMvc.perform(get("/login"))
+                    .andExpect(status().isOk())
+                    .andExpect(view().name("login/login"));
         }
 
+    }
+
+
+    @DisplayName("ログインリクエストのテスト")
+    @Nested
+    class PostLoginTest {
+
+        @DisplayName("ログイン成功の場合")
+        @WithAnonymousUser
+        @Test
+        void successLoginTest() throws Exception {
+            mockMvc.perform(post("/login")
+                    .with(csrf())
+                    .param("username", "6TM8ytI8xvJU@xxx.xx.xx")
+                    .param("password", "password")
+            ).andExpect(status().isFound())
+                    .andExpect(redirectedUrl("/task/home"));
+        }
+
+        @DisplayName("ログイン失敗の場合")
+        @WithAnonymousUser
+        @Test
+        void failLoginTest() throws Exception {
+            mockMvc.perform(post("/login")
+                    .with(csrf())
+                    .param("username", "none")
+                    .param("password", "pass")
+            ).andExpect(status().isFound())
+                    .andExpect(redirectedUrl("/login?error=true"));
+        }
     }
 
 }
