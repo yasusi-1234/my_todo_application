@@ -75,6 +75,28 @@ public final class TaskSpecificationHelper {
     }
 
     /**
+     * {@link Task} のnoticeと一致するものを検索するためのSpecificationを返却する
+     * @param notice 通知機能
+     * @return 通知機能が指定された引数を返却するSpecification
+     */
+    public static Specification<Task> inNotice(Boolean notice) {
+
+        return notice == null ? null :
+                (root, query, cb) -> cb.equal(root.get("notice"), notice);
+    }
+
+    /**
+     * {@link Task} のstartDatetimeとendDatetimeの間に一致するタスクを検索するためのSpecificationを返却する
+     * @param targetDateTime 指定の日付
+     * @return {@link Task} のstartDatetimeとendDatetimeの間に一致するタスクを検索するためのSpecification
+     */
+    public static Specification<Task> inTaskDateTime(LocalDateTime targetDateTime) {
+        return targetDateTime == null ? null :
+                (root, query, cb) -> cb.and(cb.greaterThanOrEqualTo(root.get("startDatetime"), targetDateTime),
+                        cb.lessThanOrEqualTo(root.get("endDatetime"), targetDateTime));
+    }
+
+    /**
      * progress(進捗度)が100のTaskを抽出するためのSpecificationを返却する
      * @return progress(進捗度)が100のTaskを抽出するためのSpecification
      */
