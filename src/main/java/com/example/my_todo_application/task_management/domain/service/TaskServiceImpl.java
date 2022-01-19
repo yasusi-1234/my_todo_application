@@ -68,7 +68,8 @@ public class TaskServiceImpl implements TaskService{
     }
 
     /**
-     * タスク名・開始時刻・終了時刻・重要度・タスクの進捗度の情報を元に検索されたタスクリスト情報を返却する
+     * ユーザーID・タスク名・開始時刻・終了時刻・重要度・タスクの進捗度の情報を元に検索されたタスクリスト情報を返却する
+     * @param userId ユーザーID
      * @param taskName タスク名
      * @param startTime 開始日時・時刻情報
      * @param endTime 終了日時・時刻情報
@@ -78,6 +79,7 @@ public class TaskServiceImpl implements TaskService{
      */
     @Override
     public List<Task> findTasksOf(
+            Long userId,
             String taskName,
             LocalDateTime startTime,
             LocalDateTime endTime,
@@ -86,14 +88,38 @@ public class TaskServiceImpl implements TaskService{
         return taskRepository.findAll(Specification.where(TaskSpecificationHelper.fetchUser()
                 .and(
                         TaskSpecificationHelper.likeTaskName(taskName).and(
-                                TaskSpecificationHelper.betweenDatetime(startTime, endTime).and(
-                                        TaskSpecificationHelper.equalImportance(importance).and(
-                                                TaskSpecificationHelper.progress(progress)
+                                TaskSpecificationHelper.equalAppUserId(userId).and(
+                                        TaskSpecificationHelper.betweenDatetime(startTime, endTime).and(
+                                                TaskSpecificationHelper.equalImportance(importance).and(
+                                                        TaskSpecificationHelper.progress(progress)
+                                                )
                                         )
                                 )
                         )
                 )
         ));
+    }
+
+    /**
+     * ユーザーID・通知機能・指定の日付の情報を元に検索されたタスクリスト情報を返却する
+     * @param userId ユーザーID
+     * @param notice 通知機能
+     * @param targetDateTime 指定の日付
+     * @return 引数で指定された情報のタスクリスト
+     */
+    @Override
+    public List<Task> findTasksOf(Long userId, Boolean notice, LocalDateTime targetDateTime) {
+        return taskRepository.findAll(
+                Specification.where(
+                        TaskSpecificationHelper.fetchUser().and(
+                                TaskSpecificationHelper.equalAppUserId(userId).and(
+                                        TaskSpecificationHelper.inNotice(notice).and(
+                                                TaskSpecificationHelper.inTaskDateTime(targetDateTime)
+                                        )
+                                )
+                        )
+                )
+        );
     }
 
 
