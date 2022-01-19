@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.validation.ValidationAutoConfiguration;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.validation.BindException;
 import org.springframework.validation.BindingResult;
@@ -14,7 +15,7 @@ import org.springframework.validation.Validator;
 import static org.junit.jupiter.api.Assertions.*;
 
 @DisplayName("UserRegisterFormクラスのバリデーションテスト")
-@SpringBootTest
+@SpringBootTest(classes = ValidationAutoConfiguration.class)
 class UserRegisterFormTest {
 
     @Autowired
