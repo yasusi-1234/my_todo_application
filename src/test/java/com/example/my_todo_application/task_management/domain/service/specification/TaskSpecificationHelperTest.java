@@ -7,6 +7,8 @@ import com.example.my_todo_application.task_management.domain.repository.TaskRep
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
@@ -64,7 +66,7 @@ class TaskSpecificationHelperTest {
                                 TaskSpecificationHelper.betweenDatetime(
                                         LocalDateTime.of(2010, 1, 1, 0, 0, 0),
                                         LocalDateTime.of(2010, 1, 6, 0, 0, 0)
-                                        )
+                                )
                         )
                 )
         );
@@ -203,6 +205,109 @@ class TaskSpecificationHelperTest {
             ));
 
             assertEquals(2, actual.size());
+        }
+
+    }
+
+    @Nested
+    @DisplayName("inNoticeメソッドのテスト")
+    class NoticeTest {
+
+        @Test
+        @DisplayName("inNoticeはtrueでDBのnoticeが1の要素を返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void inNoticeTrueTest() {
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.inNotice(true)
+                            )
+                    )
+            );
+
+            assertEquals(8, actual.size());
+        }
+
+        @Test
+        @DisplayName("inNoticeはfalseでDBのnoticeが0の要素を返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void inNoticeFalseTest() {
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.inNotice(false)
+                            )
+                    )
+            );
+
+            assertEquals(22, actual.size());
+        }
+
+        @Test
+        @DisplayName("inNoticeはnullでDBの全要素を返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void inNoticeNullTest() {
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.inNotice(null)
+                            )
+                    )
+            );
+
+            assertEquals(30, actual.size());
+        }
+
+    }
+
+    @Nested
+    @DisplayName("inTaskDateTimeメソッドのテスト")
+    class InDateTimeTest {
+
+        @DisplayName("inTaskDateTimeは指定された日付がDBのTaskテーブルのstartTimeとendTimeの間に位置するTask情報を返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void inTaskDateTime1 () {
+            // 日付に2010-01-06 00:00:00が指定された場合
+            LocalDateTime ldt = LocalDateTime.of(2010, 1, 6, 0, 0, 0);
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.inTaskDateTime(ldt)
+                            )
+                    )
+            );
+
+            assertEquals(2, actual.size());
+        }
+
+        @DisplayName("inTaskDateTimeは指定された日付がDBのTaskテーブルのstartTimeとendTimeの間に位置するTask情報を返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void inTaskDateTime2 () {
+            // 日付に2010-03-04 00:00:00が指定された場合
+            LocalDateTime ldt = LocalDateTime.of(2010, 1, 6, 0, 0, 0);
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.inTaskDateTime(ldt)
+                            )
+                    )
+            );
+
+            assertEquals(3, actual.size());
+        }
+
+        @DisplayName("inTaskDateTimeは指定された日付がnullの場合は全要素を返却する")
+        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+        void inTaskDateTimeIsNull () {
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.inTaskDateTime(null)
+                            )
+                    )
+            );
+
+            assertEquals(30, actual.size());
         }
 
     }
