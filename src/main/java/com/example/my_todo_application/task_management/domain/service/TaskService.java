@@ -19,9 +19,15 @@ public interface TaskService {
     void deleteByTaskId(Long taskId);
 
     List<Task> findTasksOf(
+            Long userId,
             String taskName,
             LocalDateTime startTime,
             LocalDateTime endTime,
             Importance importance,
             Progress progress);
+
+    List<Task> findTasksOf(
+            Long userId,
+            Boolean notice,
+            LocalDateTime targetDateTime);
 }
