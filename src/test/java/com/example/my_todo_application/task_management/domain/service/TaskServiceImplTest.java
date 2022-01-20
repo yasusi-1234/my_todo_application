@@ -95,7 +95,22 @@ class TaskServiceImplTest {
 
         List<Task> actual =
                 taskService.findTasksOf(
-                        "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1), Importance.NORMAL, Progress.REGISTER);
+                        1L, "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1), Importance.NORMAL, Progress.REGISTER);
+        assertEquals(tasks, actual);
+
+    }
+
+    @Test
+    @DisplayName("findTasksOf2メソッドが正しく実行される")
+    void findTasksOf2() {
+//        findTasksOf(taskName, fromDate, toDate, importance, progress) : List<Task>
+        // setUp
+        List<Task> tasks = createTasks(10);
+        doReturn(tasks).when(taskRepository).findAll(ArgumentMatchers.<Specification<Task>>any());
+
+        List<Task> actual =
+                taskService.findTasksOf(
+                        1L, true, LocalDateTime.now());
         assertEquals(tasks, actual);
 
     }
