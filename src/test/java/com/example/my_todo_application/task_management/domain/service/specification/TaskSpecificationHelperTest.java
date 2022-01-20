@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -309,6 +310,94 @@ class TaskSpecificationHelperTest {
 
             assertEquals(30, actual.size());
         }
+
+    }
+
+    @Nested
+    @DisplayName("equalTaskIdメソッドのテスト")
+    class EqualTaskIdTest {
+
+        @DisplayName("equalTaskIdが正しいSpecificationを返却する 値が存在する場合")
+        @Test
+        void canGetOneTaskWithEqualTaskId() {
+            Optional<Task> actualOpt = taskRepository.findOne(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.equalTaskId(1L)
+                            )
+
+                    )
+            );
+
+            assertTrue(actualOpt.isPresent());
+
+            Task actual = actualOpt.orElse(new Task());
+
+            assertEquals("Yjyycdz5vKA", actual.getTaskName());
+        }
+
+
+        @DisplayName("equalTaskIdが正しいSpecificationを返却する 値が存在しない場合")
+        @Test
+        void canGetOneTaskWithEqualTaskIdEmpty() {
+            Optional<Task> actualOpt = taskRepository.findOne(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.equalTaskId(100L)
+                            )
+
+                    )
+            );
+
+            assertTrue(actualOpt.isEmpty());
+
+        }
+
+        @DisplayName("equalTaskIdがequalAppUserIdと合わせても正しいSpecificationを返却する 値が存在する場合")
+        @Test
+        void equalTaskIdAndEqualUserIdOfOneTask() {
+            Optional<Task> actualOpt = taskRepository.findOne(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.equalTaskId(1L).and(
+                                            TaskSpecificationHelper.equalAppUserId(3L)
+                                    )
+                            )
+
+                    )
+            );
+
+            assertTrue(actualOpt.isPresent());
+
+            Task actual = actualOpt.orElse(new Task());
+
+            assertAll(
+                    () -> assertEquals("Yjyycdz5vKA", actual.getTaskName()),
+                    () -> assertEquals("永田", actual.getAppUser().getLastName())
+            );
+
+
+        }
+
+        @DisplayName("equalTaskIdがequalAppUserIdと合わせても正しいSpecificationを返却する 値が存在しない場合")
+        @Test
+        void equalTaskIdAndEqualUserIdOfEmpty() {
+            Optional<Task> actualOpt = taskRepository.findOne(
+                    Specification.where(
+                            TaskSpecificationHelper.fetchUser().and(
+                                    TaskSpecificationHelper.equalTaskId(1L).and(
+                                            TaskSpecificationHelper.equalAppUserId(1L)
+                                    )
+                            )
+
+                    )
+            );
+
+            assertTrue(actualOpt.isEmpty());
+
+
+        }
+
 
     }
 }
