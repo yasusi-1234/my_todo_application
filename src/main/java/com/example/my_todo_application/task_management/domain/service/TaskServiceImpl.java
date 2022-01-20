@@ -1,9 +1,11 @@
 package com.example.my_todo_application.task_management.domain.service;
 
 import com.example.my_todo_application.task_management.controller.form.Progress;
+import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import com.example.my_todo_application.task_management.domain.repository.TaskRepository;
+import com.example.my_todo_application.task_management.domain.service.exception.TaskNotFoundException;
 import com.example.my_todo_application.task_management.domain.service.specification.TaskSpecificationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
@@ -55,16 +58,6 @@ public class TaskServiceImpl implements TaskService{
     @Transactional(readOnly = false, rollbackFor = Exception.class)
     public Task saveTask(Task task){
         return taskRepository.save(task);
-    }
-
-    /**
-     * 指定されたタスクIDを持つタスクを1件リポジトリから削除する
-     * @param taskId タスクID
-     */
-    @Override
-    @Transactional(readOnly = false, rollbackFor = Exception.class)
-    public void deleteByTaskId(Long taskId){
-        taskRepository.deleteById(taskId);
     }
 
     /**
@@ -120,6 +113,31 @@ public class TaskServiceImpl implements TaskService{
                         )
                 )
         );
+    }
+
+    /**
+     * 指定されたタスクを削除するメソッド
+     * @param taskId {@link Task} のタスクID
+     * @param userId {@link AppUser} のユーザーID
+     * @throws TaskNotFoundException 指定されたタスクIDとユーザーIDのタスク情報が見つからなかった場合
+     */
+    @Transactional(readOnly = false, rollbackFor = Exception.class)
+    @Override
+    public void deleteTaskIdAndUserId(long taskId, long userId) {
+        Optional<Task> deleteTask = taskRepository.findOne(
+                Specification.where(
+                        TaskSpecificationHelper.fetchUser().and(
+                                TaskSpecificationHelper.equalAppUserId(userId).and(
+                                        TaskSpecificationHelper.equalTaskId(taskId)
+                                )
+                        )
+                )
+        );
+
+        deleteTask.orElseThrow(() -> new TaskNotFoundException(
+                "指定されたTaskIdは存在しません: 指定されたTaskId -> " + taskId));
+
+        taskRepository.delete(deleteTask.get());
     }
 
 
