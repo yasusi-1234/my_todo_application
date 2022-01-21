@@ -115,4 +115,14 @@ public final class TaskSpecificationHelper {
         return null;
     }
 
+    /**
+     * {@link Task} のtaskIdと一致する情報を返却するSpecificationメソッド
+     * @param taskId タスクID
+     * @return {@link Task} のtaskIdと一致する情報を返却するSpecification
+     */
+    public static Specification<Task> equalTaskId(Long taskId) {
+        return taskId == null ? null
+                : (root, query, cb) -> cb.equal(root.get("taskId"), taskId);
+
+    }
 }

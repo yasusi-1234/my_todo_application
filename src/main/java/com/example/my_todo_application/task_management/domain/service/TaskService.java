@@ -16,8 +16,6 @@ public interface TaskService {
 
     Task saveTask(Task task);
 
-    void deleteByTaskId(Long taskId);
-
     List<Task> findTasksOf(
             Long userId,
             String taskName,
@@ -30,4 +28,6 @@ public interface TaskService {
             Long userId,
             Boolean notice,
             LocalDateTime targetDateTime);
+
+    void deleteTaskIdAndUserId(long taskId, long userId);
 }

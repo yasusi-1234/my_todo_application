@@ -4,7 +4,9 @@ import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import com.example.my_todo_application.task_management.domain.repository.TaskRepository;
+import com.example.my_todo_application.task_management.domain.service.exception.TaskNotFoundException;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,13 +78,44 @@ class TaskServiceImplTest {
         verify(taskRepository, times(1)).save(saveTask);
     }
 
-    @Test
-    @DisplayName("deleteByTaskIdが正しく実行される")
-    void deleteTaskTest() {
-        // setUp
-        taskService.deleteByTaskId(1L);
+    @Nested
+    @DisplayName("deleteByTaskIdAndUserId")
+    class DeleteByTaskIdAndUserIdTest {
 
-        verify(taskRepository, times(1)).deleteById(anyLong());
+        @Test
+        @DisplayName("deleteByTaskIdAndUserIdで既存のタスク情報が見つかった場合はdelete処理が行われる")
+        void deleteTaskTestOfExistTask() {
+            // setUp
+            Optional<Task> taskOpt = Optional.of(new Task());
+            doReturn(taskOpt).when(taskRepository).findOne(ArgumentMatchers.<Specification<Task>>any());
+
+            // action
+            taskService.deleteTaskIdAndUserId(1L, 1L);
+
+            verify(taskRepository, times(1)).findOne(ArgumentMatchers.<Specification<Task>>any());
+            verify(taskRepository, times(1)).delete(taskOpt.get());
+        }
+
+        @Test
+        @DisplayName("deleteByTaskIdAndUserIdで既存のタスク情報が無かった場合はdelete処理は" +
+                "行われずTaskNotFoundException例外を投げる")
+        void deleteTaskTestOfEmptyTask() {
+            // setUp
+            long taskId = 1L;
+            Optional<Task> taskOpt = Optional.empty();
+            doReturn(taskOpt).when(taskRepository).findOne(ArgumentMatchers.<Specification<Task>>any());
+
+            // action
+            TaskNotFoundException e = assertThrows(
+                    TaskNotFoundException.class,
+                    () -> taskService.deleteTaskIdAndUserId(taskId, 1L));
+
+            assertEquals("指定されたTaskIdは存在しません: 指定されたTaskId -> " + taskId, e.getMessage());
+
+            verify(taskRepository, times(1)).findOne(ArgumentMatchers.<Specification<Task>>any());
+            verify(taskRepository, never()).delete(any(Task.class));
+        }
+
     }
 
     @Test

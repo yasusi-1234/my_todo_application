@@ -1,5 +1,6 @@
 package com.example.my_todo_application.task_management.controller;
 
+import com.example.my_todo_application.security.model.AppUserDetails;
 import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.controller.form.TaskRegisterForm;
 import com.example.my_todo_application.task_management.controller.form.TaskSearchForm;
@@ -8,6 +9,11 @@ import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import com.example.my_todo_application.task_management.domain.service.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -16,6 +22,9 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.time.LocalDateTime;
+import java.util.List;
 
 @Controller
 @RequestMapping("task")
@@ -37,32 +46,42 @@ public class TaskController {
 
     @GetMapping("home")
     public String getTaskHome(
+            @AuthenticationPrincipal AppUserDetails user,
             @ModelAttribute("taskSearchForm") TaskSearchForm taskSearchForm,
             @ModelAttribute("TaskRegisterFrom") TaskRegisterForm taskRegisterForm,
             Model model) {
 
+        List<Task> userTasks = taskService.findAllTaskByUserId(user.getAppUser().getAppUserId());
+        List<Task> userNoticeTasks = taskService.findTasksOf(
+                user.getAppUser().getAppUserId(), true, LocalDateTime.now());
+
+        model.addAttribute("userTasks", userTasks);
+        model.addAttribute("noticeTasks", userNoticeTasks);
+        model.addAttribute("username", user.getAppUser().getLastName());
         return "task/task-home";
     }
 
     @PostMapping("register")
     public String postRegisterTask(
+            @AuthenticationPrincipal AppUserDetails user,
             @Validated @ModelAttribute("taskRegisterForm") TaskRegisterForm taskRegisterForm,
-            @ModelAttribute("taskSearchForm") TaskSearchForm taskSearchForm,
             BindingResult bindingResult,
+            @ModelAttribute("taskSearchForm") TaskSearchForm taskSearchForm,
             UriComponentsBuilder uriComponentsBuilder,
             RedirectAttributes redirectAttributes,
             Model model
     ) {
+
         if (bindingResult.hasErrors()) {
-            return "task/task-home";
+            return getTaskHome(user, taskSearchForm, taskRegisterForm, model);
         }
 
-        // ------- セキュリティーを入れてからユーザー情報を挿入 ---------
-        Task saveTask = makeTaskFromForm(taskRegisterForm, null);
+
+        Task saveTask = makeTaskFromForm(taskRegisterForm, user.getAppUser());
         taskService.saveTask(saveTask);
 
         String uri = MvcUriComponentsBuilder.relativeTo(uriComponentsBuilder)
-                .withMethodName(this.getClass(), "getTaskHome").build().toString();
+                .withMappingName("TC#getTaskHome").build();
 
         redirectAttributes.addFlashAttribute("complete", "新規タスクを登録しました");
 
@@ -71,15 +90,17 @@ public class TaskController {
 
     @PostMapping("delete")
     public String postDeleteTask(
+            @AuthenticationPrincipal AppUserDetails user,
             @RequestParam("taskId") Long taskId,
             UriComponentsBuilder uriComponentsBuilder,
             RedirectAttributes redirectAttributes) {
-        taskService.deleteByTaskId(taskId);
+
+        taskService.deleteTaskIdAndUserId(taskId, user.getAppUser().getAppUserId());
 
         redirectAttributes.addFlashAttribute("complete", "タスクの削除が完了しました");
 
         String uri = MvcUriComponentsBuilder.relativeTo(uriComponentsBuilder)
-                .withMethodName(this.getClass(), "getTaskHome").build().toString();
+                .withMappingName("TC#getTaskHome").build();
 
         return "redirect:" + uri;
     }
