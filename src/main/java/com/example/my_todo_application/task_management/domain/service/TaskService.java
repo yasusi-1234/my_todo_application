@@ -3,7 +3,6 @@ package com.example.my_todo_application.task_management.domain.service;
 import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
