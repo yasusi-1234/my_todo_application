@@ -1,3 +1,57 @@
+.pa-10 {
+  padding: 10px;
+}
+
+.pa-20 {
+  padding: 20px;
+}
+
+.form-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.form {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #2a2626;
+}
+
+.form-item {
+  margin-bottom: 20px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+}
+
+.form-item-top {
+  margin-top: 20px;
+}
+
+.form-item-bottom {
+  margin-bottom: 0;
+}
+
+.form-label {
+  width: 90px;
+}
+
+.btn {
+  background: none;
+  border: none;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+}
+
 body {
   font-family: "Roboto", "Noto Sans JP", sans-serif;
 }
