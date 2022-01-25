@@ -1,0 +1,31 @@
+.btn-sink {
+    background: none;
+	outline: none;
+	appearance: none;
+	border: none;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: #ff9800;
+	padding: 10px 20px;
+	color: white;
+
+	border-bottom: 5px solid #d37e00;
+	box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+
+	font-weight: 700;
+	transition: all ease .3s;
+	border-radius: 5px;
+
+	&:hover {
+		border-bottom: 2px solid #d37e00;
+		margin-top: 3px;
+	}
+
+	&-icon {
+		font-weight: 700;
+		margin-right: 5px;
+	}
+}
