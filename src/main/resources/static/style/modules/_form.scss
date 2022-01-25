@@ -8,14 +8,17 @@
     padding: 20px;
     border: 1px solid #2a2626;
 
+    box-shadow: 3px 3px 5px 0px rgb(0, 0, 0, .3);
+
     &-item {
         margin-bottom: 20px;
 
         display: flex;
         justify-content: space-evenly;
+        align-items: center;
 
         &-top {
-            margin-top: 20px;
+            margin-bottom: 10px;
         }
 
         &-bottom {
@@ -25,6 +28,9 @@
 
     &-label{
         width: 90px;
+        margin: 0;
+        font-weight: 700;
+        color: #544d4d;
     }
 
 }
