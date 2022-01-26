@@ -1,3 +1,20 @@
 body {
     font-family: $font-family;
 }
+
+.form {
+    width: 95%;
+    max-width: 330px;
+}
+
+.title{
+    display: flex;
+    justify-content: center;
+    margin-top: 50px;
+    margin-bottom: 10px;
+}
+
+.img-logo {
+    width: 150px;
+    height: 50px;
+}

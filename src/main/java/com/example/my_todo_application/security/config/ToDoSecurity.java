@@ -27,7 +27,7 @@ public class ToDoSecurity extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         // セキュリティーを無視する静的リソースリクエストの設定
-        web.ignoring().antMatchers("/style/**", "/js/**");
+        web.ignoring().antMatchers("/style/**", "/js/**", "/img/**");
     }
 
     @Override

@@ -19,6 +19,8 @@
   margin: 20px;
   padding: 20px;
   border: 1px solid #2a2626;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+          box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
 }
 
 .form-item {
@@ -47,6 +49,20 @@
   margin: 0;
   font-weight: 700;
   color: #544d4d;
+}
+
+.form-error {
+  color: crimson;
+  margin-bottom: 0;
+  font-size: 14px;
+}
+
+.form-text:focus {
+  -webkit-box-shadow: 0 0 5px 0px #ff9900;
+          box-shadow: 0 0 5px 0px #ff9900;
+  outline: #ff9900;
+  border: 2px solid #ff9900;
+  background-color: #d9ebf7;
 }
 
 .btn-sink {
@@ -89,5 +105,26 @@
 
 body {
   font-family: "Roboto", "Noto Sans JP", sans-serif;
+}
+
+.form {
+  width: 95%;
+  max-width: 330px;
+}
+
+.title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+.img-logo {
+  width: 150px;
+  height: 50px;
 }
 /*# sourceMappingURL=login.css.map */
