@@ -29,3 +29,62 @@
 		margin-right: 5px;
 	}
 }
+
+.btn-close {
+	position: relative;
+
+    background: none;
+	outline: none;
+	appearance: none;
+	border: none;
+	overflow: hidden;
+
+	@include p-base{
+		background-color: #094;
+    	transform: translateX(-100%) skewX(50deg);
+		transition: all ease 0.7s;
+	};
+
+	@include p-base($which: after){
+		background-color: #094;
+    	transform: translateX(100%) skewX(50deg);
+		transition: all ease 0.7s;
+	};
+
+	transition: all ease 0.7s;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: black;
+	padding: 10px 20px;
+	color: white;
+
+	box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+	
+	font-weight: 700;
+	
+	
+	&:hover {
+		@include p-base{
+			transform: translateX(-20%) skewX(50deg);
+		};
+	
+		@include p-base($which: after){
+			transform: translateX(20%) skewX(50deg);
+		};
+
+		color: black;
+	}
+
+	&-icon {
+		font-weight: 700;
+		margin-right: 5px;
+	}
+
+	& span {
+		position: relative;
+		z-index: 100;
+	}
+}
