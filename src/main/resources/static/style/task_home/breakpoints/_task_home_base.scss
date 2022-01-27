@@ -1,0 +1,40 @@
+body {
+    font-family: $font-family;
+}
+
+.img-logo {
+    width: 100px;
+    height: 35px;
+}
+
+.header {
+    border-bottom: 1px solid #e3e3e3;
+    margin-bottom: 5px;
+
+    &-inner {
+        margin: 8px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.logout-link {
+    @extend .font-a-s;
+}
+
+.head {
+    margin: 0 8px;
+
+    &-title {
+        color: $cNaturalGray;
+        font-size: 20px;
+    }
+
+    &-name {
+        font-size: 12px;
+        text-align: right;
+        color: $cNaturalGray;
+    }
+}
