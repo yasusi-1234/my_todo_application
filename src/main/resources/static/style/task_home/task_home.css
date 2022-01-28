@@ -73,6 +73,14 @@
   background-color: #d9ebf7;
 }
 
+.form-datetime {
+  width: 200px;
+}
+
+.form-textarea {
+  width: 200px;
+}
+
 .btn-sink {
   background: none;
   outline: none;
@@ -113,6 +121,7 @@
 
 .btn-close {
   position: relative;
+  z-index: 10;
   background: none;
   outline: none;
   -webkit-appearance: none;
@@ -251,5 +260,42 @@ body {
 
 .main {
   margin: 0 8px;
+}
+
+.global-container {
+  position: relative;
+  height: 100vh;
+}
+
+.back-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: 50;
+  background-color: rgba(0, 0, 0, 0.3);
+}
+
+.form {
+  background-color: white;
+}
+
+.form-item {
+  -webkit-box-pack: start;
+      -ms-flex-pack: start;
+          justify-content: flex-start;
+}
+
+.form-item-bottom {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.form-item-top {
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
 }
 /*# sourceMappingURL=task_home.css.map */
