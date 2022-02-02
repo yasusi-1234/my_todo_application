@@ -44,7 +44,7 @@
             box-shadow: 0 0 5px 0px rgba(255,153,0,1);
             // outline: 2px solid #ff9900;
             outline: rgba(255,153,0,1);
-            border: 2px solid rgba(255,153,0,1);;
+            border: 2px solid rgba(255,153,0,1);
             background-color: #d9ebf7;
         }
     }
@@ -55,6 +55,14 @@
 
     &-textarea {
         width: 200px;
+
+        &:focus {
+            box-shadow: 0 0 5px 0px rgba(255,153,0,1);
+            // outline: 2px solid rgba(255,153,0,1);
+            outline: rgba(255,153,0,1);
+            border: 1px solid rgba(255,153,0,1);
+            background-color: #d9ebf7;
+        }
     }
 
 }
