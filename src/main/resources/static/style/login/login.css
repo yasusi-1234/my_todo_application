@@ -73,6 +73,22 @@
   background-color: #d9ebf7;
 }
 
+.form-datetime {
+  width: 200px;
+}
+
+.form-textarea {
+  width: 200px;
+}
+
+.form-textarea:focus {
+  -webkit-box-shadow: 0 0 5px 0px #ff9900;
+          box-shadow: 0 0 5px 0px #ff9900;
+  outline: #ff9900;
+  border: 1px solid #ff9900;
+  background-color: #d9ebf7;
+}
+
 .btn-sink {
   background: none;
   outline: none;
@@ -113,6 +129,7 @@
 
 .btn-close {
   position: relative;
+  z-index: 10;
   background: none;
   outline: none;
   -webkit-appearance: none;

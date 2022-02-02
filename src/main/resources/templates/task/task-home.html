@@ -50,19 +50,35 @@
             <h1 class="head-title">タスク管理</h1>
           </div>
           <div class="head-notice">
-            通知
+            <ul class="head-notice-ul">
+              <li class="head-notice-li head-notice-text">
+                <span class="material-icons icon-normal">
+                  check_circle
+                </span>
+                現在通知は有りません
+              </li>
+              <li class="head-notice-li head-notice-text">
+                <span class="material-icons icon-warn">
+                  error
+                </span>
+                Task2 は現在終了していません!!
+              </li>
+              <li class="head-notice-li head-notice-text">
+                <span class="material-icons icon-warn">
+                  error
+                </span>
+                Task3 は現在終了していません!!
+              </li>
+            </ul>
           </div>
         </section>
 
         <main class="main">
           <section class="main-head">
-            <div class="main-head-title">
-              <h2>山田 さんのタスク</h2>
-            </div>
             <div class="main-head-add">
-              <button class="btn-close">
+              <button class="btn-close btn">
                 <span class="material-icons btn-icon">add_circle_outline</span>
-                <span>新規タスク登録</span>
+                <span class="btn-text">新規タスク登録</span>
               </button>
             </div>
             <div class="main-head-search">
@@ -122,7 +138,7 @@
       </div>
     </div>
 
-    <div class="back-container">
+    <div class="back-container in-view">
       <div class="form-container">
         <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskRegisterForm}">
 
