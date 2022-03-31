@@ -4,9 +4,15 @@ import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.lang.Nullable;
+import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
+
+import static com.example.my_todo_application.task_management.common.EntityNames.*;
 
 /**
  * TaskRepositoryのSpecificationを生成するためのHelperクラス
@@ -21,9 +27,9 @@ public final class TaskSpecificationHelper {
     public static Specification<Task> fetchUser() {
         return (root, query, cb) -> {
             if (query.getResultType() == Long.class || query.getResultType() == long.class) {
-                root.join("appUser");
+                root.join(APP_USER);
             } else {
-                root.fetch("appUser");
+                root.fetch(APP_USER);
             }
             return query.getRestriction();
         };
@@ -35,7 +41,7 @@ public final class TaskSpecificationHelper {
      * @return タスク名を含むタスクを返却するSpecification
      */
     public static Specification<Task> likeTaskName(String taskName) {
-        return StringUtils.hasText(taskName) ? (root, query, cb) -> cb.like(root.get("taskName"), "%" + taskName + "%")
+        return StringUtils.hasText(taskName) ? (root, query, cb) -> cb.like(root.get(TASK_NAME), "%" + taskName + "%")
         : null;
     }
 
@@ -46,22 +52,29 @@ public final class TaskSpecificationHelper {
      */
     public static Specification<Task> equalAppUserId(Long id) {
         return id == null || id < 0L ? null
-                : (root, query, cb) -> cb.equal(root.get("appUser").get("appUserId"), id);
+                : (root, query, cb) -> cb.equal(root.get(APP_USER).get(APP_USER_ID), id);
     }
 
     /**
-     * {@link com.example.my_todo_application.task_management.domain.model.AppUser} のstartDatetime
-     * {@link com.example.my_todo_application.task_management.domain.model.AppUser} のendDatetime
-     * の何れかが引数に指定されているstartとendの間に含まれている情報を返却するためのSpecification
+     * 引数で指定された日付以降の終了日を持つ {@link Task} を抽出するためのSpecificationを返却する
      *
-     * @param start 検索したい範囲の開始日時情報
-     * @param end   検索したい範囲の終了日時情報
-     * @return 引数に指定されているstartとendの間をAppUserのstartDatetimeかendDateTimeを満たすSpecification
+     * @param start 検索したい先端の日付データ
+     * @return 引数で指定された日付以降の終了日を持つ {@link Task} を抽出するためのSpecification
      */
-    public static Specification<Task> betweenDatetime(LocalDateTime start, LocalDateTime end) {
-        return start == null || end == null || start.isAfter(end) ? null :
-                (root, query, cb) -> cb.or(cb.between(root.get("startDatetime"), start, end),
-                        cb.between(root.get("endDatetime"), start, end));
+    public static Specification<Task> afterDate(LocalDate start) {
+        return start == null ? null :
+                (root, query, cb) -> cb.greaterThanOrEqualTo(root.get(END_DATE), start);
+    }
+
+    /**
+     * 引数で指定された日付以前の開始日を持つ {@link Task} を抽出するためのSpecificationを返却する
+     *
+     * @param end 検索したい末端の日付データ
+     * @return 引数で指定された日付以前の開始日を持つ {@link Task} を抽出するためのSpecification
+     */
+    public static Specification<Task> beforeDate(LocalDate end) {
+        return end == null ? null :
+                (root, query, cb) -> cb.lessThanOrEqualTo(root.get(START_DATE), end);
     }
 
     /**
@@ -71,7 +84,17 @@ public final class TaskSpecificationHelper {
      */
     public static Specification<Task> equalImportance(Importance importance){
         return importance == null ? null :
-                (root, query, cb) -> cb.equal(root.get("importance"), importance);
+                (root, query, cb) -> cb.equal(root.get(IMPORTANCE), importance);
+    }
+
+    /**
+     * {@link Task} のimportanceと一致するものを抽出するためのSpecificationを返却する
+     * @param importance 重要度のリスト
+     * @return Taskのimportanceが一致するものを研削するためのSpecification
+     */
+    public static Specification<Task> inImportance(List<Importance> importance){
+        return CollectionUtils.isEmpty(importance) ? null :
+                (root, query, cb) -> root.get(IMPORTANCE).in(importance);
     }
 
     /**
@@ -82,7 +105,7 @@ public final class TaskSpecificationHelper {
     public static Specification<Task> inNotice(Boolean notice) {
 
         return notice == null ? null :
-                (root, query, cb) -> cb.equal(root.get("notice"), notice);
+                (root, query, cb) -> cb.equal(root.get(NOTICE), notice);
     }
 
     /**
@@ -92,27 +115,34 @@ public final class TaskSpecificationHelper {
      */
     public static Specification<Task> inTaskDateTime(LocalDateTime targetDateTime) {
         return targetDateTime == null ? null :
-                (root, query, cb) -> cb.and(cb.greaterThanOrEqualTo(root.get("startDatetime"), targetDateTime),
-                        cb.lessThanOrEqualTo(root.get("endDatetime"), targetDateTime));
+                (root, query, cb) -> cb.and(cb.greaterThanOrEqualTo(root.get(START_DATE), targetDateTime),
+                        cb.lessThanOrEqualTo(root.get(END_DATE), targetDateTime));
     }
 
     /**
-     * progress(進捗度)が100のTaskを抽出するためのSpecificationを返却する
-     * @return progress(進捗度)が100のTaskを抽出するためのSpecification
+     * progress(進捗度)が100(完了)のTask、99以下(未完了)のTaskを抽出するためのSpecificationを返却する
+     * @return progress(進捗度)が100(完了)のTask、99以下(未完了)のTaskを抽出するためのSpecification
      */
     public static Specification<Task> progress(Progress progress){
+
+        final int TASK_REGISTER = 100;
+
+        if (progress == null){
+            return null;
+        }
+
         switch (progress){
             case REGISTER:
                 return (root, query, cb) ->
-                        cb.equal(root.get("progress"), 100);
-            case WORKING:
+                        cb.equal(root.get(PROGRESS), TASK_REGISTER);
+            case NOT_REGISTER:
                 return (root, query, cb) ->
-                        cb.between(root.get("progress"), 1, 99);
-            case NOT_START:
-                return (root, query, cb) ->
-                        cb.equal(root.get("progress"), 0);
+                        cb.notEqual(root.get(PROGRESS), TASK_REGISTER);
+            case ALL:
+            default:
+                return null;
+
         }
-        return null;
     }
 
     /**
@@ -122,7 +152,7 @@ public final class TaskSpecificationHelper {
      */
     public static Specification<Task> equalTaskId(Long taskId) {
         return taskId == null ? null
-                : (root, query, cb) -> cb.equal(root.get("taskId"), taskId);
+                : (root, query, cb) -> cb.equal(root.get(TASK_ID), taskId);
 
     }
 }
