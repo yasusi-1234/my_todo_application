@@ -1,56 +1,115 @@
 package com.example.my_todo_application.task_management.domain.model;
 
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.Objects;
+import java.awt.image.ImageProducer;
+import java.time.LocalDate;
 
-@Entity
-@Getter
-@Setter
 @ToString
-@RequiredArgsConstructor
-public class Task implements Serializable {
-
+@Entity
+@Table(name = "task")
+public class Task {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "task_id", nullable = false)
     private Long taskId;
 
-    @Column(nullable = false)
+    @Column(name = "task_name", nullable = false, length = 20)
     private String taskName;
 
+    @Column(name = "start_date", nullable = false)
+    private LocalDate startDate;
+
+    @Column(name = "end_date", nullable = false)
+    private LocalDate endDate;
+
+    @Column(name = "detail")
     private String detail;
 
-    @Column(nullable = false)
-    private LocalDateTime startDatetime;
-    @Column(nullable = false)
-    private LocalDateTime endDatetime;
-
     @Enumerated(EnumType.STRING)
+    @Column(name = "importance", nullable = false, length = 10)
     private Importance importance;
-    @Column(nullable = false)
-    private int progress;
-    @Column(nullable = false)
-    private boolean notice;
+
+    @Column(name = "progress", nullable = false)
+    private Integer progress;
+
+    @Column(name = "notice", nullable = false)
+    private Boolean notice = false;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "app_user_id")
-    @ToString.Exclude
     private AppUser appUser;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        Task task = (Task) o;
-        return taskId != null && Objects.equals(taskId, task.taskId);
+    public AppUser getAppUser() {
+        return appUser;
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
+    }
+
+    public Boolean getNotice() {
+        return notice;
+    }
+
+    public void setNotice(Boolean notice) {
+        this.notice = notice;
+    }
+
+    public Integer getProgress() {
+        return progress;
+    }
+
+    public void setProgress(Integer progress) {
+        this.progress = progress;
+    }
+
+    public Importance getImportance() {
+        return importance;
+    }
+
+    public void setImportance(Importance importance) {
+        this.importance = importance;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
+    }
+
+    public LocalDate getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(LocalDate endDate) {
+        this.endDate = endDate;
+    }
+
+    public LocalDate getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDate startDate) {
+        this.startDate = startDate;
+    }
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public Long getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 }

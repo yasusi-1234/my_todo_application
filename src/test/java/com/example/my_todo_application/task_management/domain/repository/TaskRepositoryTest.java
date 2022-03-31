@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -36,11 +37,11 @@ class TaskRepositoryTest {
                 () -> assertEquals(1L, actualIndex0.getTaskId()),
                 () -> assertEquals("Yjyycdz5vKA", actualIndex0.getTaskName()),
                 () -> assertEquals("meMU861oMVYQhsmSj", actualIndex0.getDetail()),
-                () -> assertEquals(LocalDateTime.of(2021, 12, 29, 0, 0, 0), actualIndex0.getStartDatetime()),
-                () -> assertEquals(LocalDateTime.of(2022, 1, 29, 0, 0, 0), actualIndex0.getEndDatetime()),
-                () -> assertEquals(Importance.NORMAL, actualIndex0.getImportance()),
+                () -> assertEquals(LocalDate.of(2021, 12, 29), actualIndex0.getStartDate()),
+                () -> assertEquals(LocalDate.of(2022, 1, 29), actualIndex0.getEndDate()),
+                () -> assertEquals(Importance.NORMAL.getViewName(), actualIndex0.getImportance()),
                 () -> assertEquals(58 , actualIndex0.getProgress()),
-                () -> assertEquals(true , actualIndex0.isNotice()),
+                () -> assertEquals(true , actualIndex0.getNotice()),
                 () -> assertEquals(3L , actualIndex0.getAppUser().getAppUserId())
         );
 
@@ -74,10 +75,10 @@ class TaskRepositoryTest {
                 () -> assertEquals("test", savedTask.getTaskName()),
                 () -> assertEquals("test", savedTask.getDetail()),
                 () -> assertEquals(1, savedTask.getProgress()),
-                () -> assertEquals(true, savedTask.isNotice()),
+                () -> assertEquals(true, savedTask.getNotice()),
                 () -> assertEquals(Importance.HIGH, savedTask.getImportance()),
-                () -> assertEquals(LocalDateTime.of(2000, 1, 1, 0, 0, 0), savedTask.getStartDatetime()),
-                () -> assertEquals(LocalDateTime.of(2001, 2, 3, 1, 2, 3), savedTask.getEndDatetime()),
+                () -> assertEquals(LocalDate.of(2000, 1, 1), savedTask.getStartDate()),
+                () -> assertEquals(LocalDate.of(2001, 2, 3), savedTask.getEndDate()),
                 () -> assertEquals(3L, savedTask.getAppUser().getAppUserId())
         );
 
@@ -111,8 +112,8 @@ class TaskRepositoryTest {
         task.setTaskName("test");
         task.setDetail("test");
         task.setImportance(Importance.HIGH);
-        task.setStartDatetime(LocalDateTime.of(2000, 1, 1, 0, 0, 0));
-        task.setEndDatetime(LocalDateTime.of(2001, 2, 3, 1, 2, 3));
+        task.setStartDate(LocalDate.of(2000, 1, 1));
+        task.setEndDate(LocalDate.of(2001, 2, 3));
         task.setAppUser(appUser);
         return task;
     }

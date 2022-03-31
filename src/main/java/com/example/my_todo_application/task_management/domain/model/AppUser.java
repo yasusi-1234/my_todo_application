@@ -1,50 +1,81 @@
 package com.example.my_todo_application.task_management.domain.model;
 
-import lombok.*;
-import org.hibernate.Hibernate;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.util.Objects;
 
-@Entity
-@Getter
-@Setter
+@EqualsAndHashCode
 @ToString
-@RequiredArgsConstructor
-public class AppUser implements Serializable {
-
+@Entity
+@Table(name = "app_user")
+public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "app_user_id")
+    @Column(name = "app_user_id", nullable = false)
     private Long appUserId;
 
-    @Column(nullable = false)
+    @Column(name = "first_name", nullable = false, length = 20)
     private String firstName;
 
-    @Column(nullable = false)
+    @Column(name = "last_name", nullable = false, length = 20)
     private String lastName;
 
-    @Column(nullable = false)
-    private String password;
-
-    @Column(nullable = false)
+    @Column(name = "mail_address", nullable = false, length = 100)
     private String mailAddress;
 
-    @OneToOne
+    @Column(name = "password", nullable = false, length = 100)
+    private String password;
+
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        AppUser appUser = (AppUser) o;
-        return appUserId != null && Objects.equals(appUserId, appUser.appUserId);
+    public Role getRole() {
+        return role;
     }
 
-    @Override
-    public int hashCode() {
-        return getClass().hashCode();
+    public void setRole(Role role) {
+        this.role = role;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
+
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public Long getAppUserId() {
+        return appUserId;
+    }
+
+    public void setAppUserId(Long appUserId) {
+        this.appUserId = appUserId;
     }
 }

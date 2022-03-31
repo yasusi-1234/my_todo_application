@@ -5,6 +5,7 @@ import lombok.Getter;
 public enum Importance {
     VERY_HIGH("極高"), HIGH("高い"), NORMAL("普通"), LOW("低い"), VERY_LOW("極低");
 
+    /** 画面に表示する名前 */
     @Getter
     private final String viewName;
 

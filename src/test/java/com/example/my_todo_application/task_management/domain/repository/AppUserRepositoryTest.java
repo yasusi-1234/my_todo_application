@@ -1,6 +1,5 @@
 package com.example.my_todo_application.task_management.domain.repository;
 
-import com.example.my_todo_application.security.config.ToDoSecurity;
 import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.model.Role;
 import org.junit.jupiter.api.Assumptions;
@@ -10,8 +9,6 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -42,6 +39,9 @@ class AppUserRepositoryTest {
     void findByIdTest() throws Exception{
         AppUser actual = appUserRepository.findById(1L).orElse(null);
         AppUser expected = createTestAppUser();
+
+        System.out.println(actual);
+        System.out.println(expected);
         assertEquals(expected, actual);
     }
 
@@ -120,14 +120,14 @@ class AppUserRepositoryTest {
 
     private AppUser createTestAppUser(){
         Role role = new Role();
-        role.setRoleId(1L);
+        role.setRoleId(1);
         role.setRoleName("ROLE_GENERAL");
         AppUser appUser = new AppUser();
         appUser.setFirstName("元気");
         appUser.setLastName("青山");
         appUser.setMailAddress("6TM8ytI8xvJU@xxx.xx.xx");
         appUser.setAppUserId(1L);
-        appUser.setPassword("password");
+        appUser.setPassword("$2a$08$JzxZt/iR5j39Auolu2jI..lW0q9fMwbUhEz/QjX1JIBj.Ab96wELe");
         appUser.setRole(role);
         return appUser;
     }

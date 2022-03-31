@@ -1,5 +1,6 @@
 package com.example.my_todo_application.task_management.domain.service;
 
+
 import com.example.my_todo_application.task_management.controller.form.Progress;
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
@@ -14,7 +15,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.domain.Specification;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -128,22 +130,7 @@ class TaskServiceImplTest {
 
         List<Task> actual =
                 taskService.findTasksOf(
-                        1L, "test", LocalDateTime.now(), LocalDateTime.now().plusDays(1), Importance.NORMAL, Progress.REGISTER);
-        assertEquals(tasks, actual);
-
-    }
-
-    @Test
-    @DisplayName("findTasksOf2メソッドが正しく実行される")
-    void findTasksOf2() {
-//        findTasksOf(taskName, fromDate, toDate, importance, progress) : List<Task>
-        // setUp
-        List<Task> tasks = createTasks(10);
-        doReturn(tasks).when(taskRepository).findAll(ArgumentMatchers.<Specification<Task>>any());
-
-        List<Task> actual =
-                taskService.findTasksOf(
-                        1L, true, LocalDateTime.now());
+                        1L, "test", LocalDate.now(), LocalDate.now().plusDays(1), Arrays.asList(Importance.values()), Progress.ALL);
         assertEquals(tasks, actual);
 
     }
@@ -154,8 +141,8 @@ class TaskServiceImplTest {
         task.setTaskName("test");
         task.setDetail("this is test");
         task.setImportance(Importance.NORMAL);
-        task.setStartDatetime(LocalDateTime.of(2010, 1, 1, 0, 0, 0));
-        task.setEndDatetime(LocalDateTime.of(2011, 1, 2, 1, 2, 3));
+        task.setStartDate(LocalDate.of(2010, 1, 1));
+        task.setEndDate(LocalDate.of(2011, 1, 2));
         task.setNotice(false);
         task.setProgress(10);
 

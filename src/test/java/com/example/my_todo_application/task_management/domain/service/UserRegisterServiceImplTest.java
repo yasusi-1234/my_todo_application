@@ -37,7 +37,7 @@ class UserRegisterServiceImplTest {
         AppUser expected = testAppUser();
         // ロール情報
         Role role = new Role();
-        role.setRoleId(1L);
+        role.setRoleId(1);
         role.setRoleName("ROLE_GENERAL");
         expected.setRole(role);
         // パスワード情報

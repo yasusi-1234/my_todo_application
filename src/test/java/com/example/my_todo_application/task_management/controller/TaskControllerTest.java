@@ -6,12 +6,13 @@ import com.example.my_todo_application.task_management.controller.form.TaskRegis
 import com.example.my_todo_application.task_management.domain.model.Importance;
 import com.example.my_todo_application.task_management.domain.model.Task;
 import com.example.my_todo_application.task_management.domain.service.TaskService;
+import com.example.my_todo_application.task_management.domain.service.TaskServiceImpl;
 import com.example.my_todo_application.task_management.domain.service.exception.TaskNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.ArgumentMatchers;
+import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.AutoConfigureDataJpa;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -21,7 +22,9 @@ import org.springframework.context.annotation.FilterType;
 import org.springframework.security.test.context.support.WithAnonymousUser;
 import org.springframework.security.test.context.support.WithUserDetails;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,10 +42,11 @@ import static org.junit.jupiter.api.Assertions.*;
 @WebMvcTest(controllers =TaskController.class,
         includeFilters = @ComponentScan.Filter(
                 type = FilterType.ASSIGNABLE_TYPE,
-                classes = { AppUserDetailsService.class }
+                classes = { AppUserDetailsService.class, TaskServiceImpl.class}
         ))
 // jpa関連のDIの設定
 @AutoConfigureDataJpa
+@Transactional
 class TaskControllerTest {
 
         @Autowired
@@ -76,20 +80,20 @@ class TaskControllerTest {
                         ArgumentCaptor<Long> argumentCaptor = ArgumentCaptor.forClass(Long.class);
 
                         doReturn(expected1).when(taskService).findAllTaskByUserId(anyLong());
-                        doReturn(expected2).when(taskService).findTasksOf(anyLong(), anyBoolean(), any(LocalDateTime.class));
+//                        doReturn(expected2).when(taskService).findTasksOf(anyLong(), anyBoolean(), any(LocalDateTime.class));
 
                         mockMvc.perform(get("/task/home"))
                                 .andExpect(status().isOk())
                                 .andExpect(view().name("task/task-home"))
                                 .andExpect(model().attribute("username", "青山"))
                                 .andExpect(model().attribute("userTasks", expected1))
-                                .andExpect(model().attribute("noticeTasks", expected2))
+//                                .andExpect(model().attribute("noticeTasks", expected2))
                                 // controller全体で共有しているmodel
                                 .andExpect(model().attribute("progress", Progress.values()))
                                 .andExpect(model().attribute("importance", Importance.values()));
 
                         verify(taskService, times(1)).findAllTaskByUserId(argumentCaptor.capture());
-                        verify(taskService, times(1)).findTasksOf(anyLong(), anyBoolean(), any(LocalDateTime.class));
+//                        verify(taskService, times(1)).findTasksOf(anyLong(), anyBoolean(), any(LocalDateTime.class));
 
                         assertEquals(1L, argumentCaptor.getValue());
                 }
@@ -207,8 +211,8 @@ class TaskControllerTest {
         private TaskRegisterForm badRegisterForm(){
                 TaskRegisterForm form = new TaskRegisterForm();
                 form.setTaskName("");
-                form.setStartDateTime(LocalDateTime.now().minusDays(1));
-                form.setEndDateTime(LocalDateTime.now());
+                form.setStartDate(LocalDate.now().minusDays(1));
+                form.setEndDate(LocalDate.now());
                 form.setImportance(null);
                 form.setProgress(-1);
                 return form;
@@ -217,8 +221,8 @@ class TaskControllerTest {
         private TaskRegisterForm normalRegisterForm(){
                 TaskRegisterForm form = new TaskRegisterForm();
                 form.setTaskName("this is task");
-                form.setStartDateTime(LocalDateTime.now().minusDays(1));
-                form.setEndDateTime(LocalDateTime.now());
+                form.setStartDate(LocalDate.now().minusDays(1));
+                form.setEndDate(LocalDate.now());
                 form.setImportance(Importance.NORMAL);
                 form.setProgress(55);
                 form.setNotice(true);

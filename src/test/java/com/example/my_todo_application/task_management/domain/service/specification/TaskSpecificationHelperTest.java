@@ -7,15 +7,15 @@ import com.example.my_todo_application.task_management.domain.repository.TaskRep
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -57,35 +57,67 @@ class TaskSpecificationHelperTest {
         actual.forEach(testObj -> assertEquals(1L, testObj.getAppUser().getAppUserId()));
     }
 
-    @Test
-    @DisplayName("betweenDatetimeは引数で与えた間の日付のデータを取得する")
+    @Nested
+    @DisplayName("日付の抽出に関するメソッドのテスト")
     @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-    void betweenDatetimeTest() {
-        List<Task> actual1 = taskRepository.findAll(
-                Specification.where(
-                        TaskSpecificationHelper.fetchUser().and(
-                                TaskSpecificationHelper.betweenDatetime(
-                                        LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-                                        LocalDateTime.of(2010, 1, 6, 0, 0, 0)
-                                )
-                        )
-                )
-        );
+    class DateAfterAndBefore {
 
-        assertEquals(2, actual1.size());
+        @Test
+        @DisplayName("afterDateメソッドは引数に与えた日付以降の終了日を持つタスクを抽出するSpecificationを返却する")
+        void afterDateTest() {
 
-        List<Task> actual2 = taskRepository.findAll(
-                Specification.where(
-                        TaskSpecificationHelper.fetchUser().and(
-                                TaskSpecificationHelper.betweenDatetime(
-                                        LocalDateTime.of(2010, 1, 1, 0, 0, 0),
-                                        LocalDateTime.of(2010, 3, 2, 0, 0, 0)
-                                )
-                        )
-                )
-        );
+            LocalDate startDate = LocalDate.of(2023, 3, 14);
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.afterDate(startDate)
+                    )
+            );
 
-        assertEquals(8, actual2.size());
+            int expected = 4;
+            assertEquals(expected, actual.size());
+
+            List<String> taskNames = List
+                    .of("0OLNL2C0gsl5hMNN", "cowhgvKF3cv2", "RNx095v4aCtuO", "RTytr4ZvYVK");
+
+            actual.forEach( actualTaskName ->
+                    assertTrue(taskNames.contains(actualTaskName.getTaskName()))
+            );
+        }
+
+        @Test
+        @DisplayName("beforeDateメソッドは引数に与えた日付以前の開始日を持つタスクを抽出するSpecificationを返却する")
+        void beforeDateTest() {
+
+            LocalDate endDate = LocalDate.of(2021, 12, 29);
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.beforeDate(endDate)
+                    )
+            );
+
+            int expected = 20;
+            assertEquals(expected, actual.size());
+        }
+
+        @Test
+        @DisplayName("beforeDateメソッドとafterDateの組み合わせで" +
+                "期待したTaskオブジェクトを取得できる")
+        void beforeDateAndAfterDateTest() {
+
+            LocalDate startDate = LocalDate.of(2023, 3, 6);
+            LocalDate endDate = LocalDate.of(2023, 3, 14);
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.beforeDate(endDate)
+                    ).and(
+                            TaskSpecificationHelper.afterDate(startDate)
+                    )
+            );
+
+            int expected = 4;
+            assertEquals(expected, actual.size());
+        }
+
     }
 
     @Test
@@ -121,6 +153,46 @@ class TaskSpecificationHelperTest {
         );
 
         assertEquals(22, actual3.size());
+    }
+
+    @Nested
+    @DisplayName("inImportanceメソッドのテスト")
+    @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+    class InImportanceTest {
+
+        @DisplayName("全てのImportanceを指定すると全てのTaskを取得できる")
+        @Test
+        void inImportanceAllTest() {
+            List<Importance> importanceList = Arrays.asList(Importance.values());
+
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.inImportance(importanceList)
+                    )
+            );
+
+            int expectedSize = 30;
+
+            assertEquals(expectedSize, actual.size());
+        }
+
+        @DisplayName("引数にHighとVeryHighのImportanceListを指定するとHighとVeryHighのImportanceを含むTaskを取得できる")
+        @Test
+        void inImportanceHighAndVeryHigh() {
+            List<Importance> importanceList = Arrays.asList(Importance.HIGH, Importance.VERY_HIGH);
+
+            List<Task> actual = taskRepository.findAll(
+                    Specification.where(
+                            TaskSpecificationHelper.inImportance(importanceList)
+                    )
+            );
+
+            int expectedSize = 3;
+
+            assertEquals(expectedSize, actual.size());
+
+            actual.forEach(act -> assertTrue(importanceList.contains(act.getImportance())));
+        }
     }
 
     @Test
@@ -161,11 +233,11 @@ class TaskSpecificationHelperTest {
 
     @Nested
     @DisplayName("progressメソッドのテスト")
+    @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
     class ProgressTest {
 
         @Test
         @DisplayName("ProgressがRegisterの場合DBのProgressが100の要素を返却するSpecificationを返却する")
-        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
         void progressRegisterTest() {
             Progress progress = Progress.REGISTER;
 
@@ -175,14 +247,15 @@ class TaskSpecificationHelperTest {
                     )
             ));
 
-            assertEquals(5, actual.size());
+            int expected = 5;
+
+            assertEquals(expected, actual.size());
         }
 
         @Test
-        @DisplayName("ProgressがWORKINGの場合DBのProgressが1以上~100未満の要素を返却するSpecificationを返却する")
-        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-        void progressWorkingTest() {
-            Progress progress = Progress.WORKING;
+        @DisplayName("ProgressがNOT_REGISTERの場合DBのProgressが100以外の要素を返却するSpecificationを返却する")
+        void progressNotRegisterTest() {
+            Progress progress = Progress.NOT_REGISTER;
 
             List<Task> actual = taskRepository.findAll(Specification.where(
                     TaskSpecificationHelper.fetchUser().and(
@@ -190,14 +263,15 @@ class TaskSpecificationHelperTest {
                     )
             ));
 
-            assertEquals(23, actual.size());
+            int expected = 25;
+
+            assertEquals(expected, actual.size());
         }
 
         @Test
-        @DisplayName("ProgressがNOTSTERTの場合DBのProgressが0の要素を返却するSpecificationを返却する")
-        @Sql(scripts = "classpath:/specification.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
-        void progressNotStartTest() {
-            Progress progress = Progress.NOT_START;
+        @DisplayName("ProgressがALLの場合全ての要素が取得される")
+        void progressAllTest() {
+            Progress progress = Progress.ALL;
 
             List<Task> actual = taskRepository.findAll(Specification.where(
                     TaskSpecificationHelper.fetchUser().and(
@@ -205,7 +279,24 @@ class TaskSpecificationHelperTest {
                     )
             ));
 
-            assertEquals(2, actual.size());
+            int expected = 30;
+
+            assertEquals(expected, actual.size());
+        }
+
+        @Test
+        @DisplayName("Progressがnullの場合全ての要素が取得される")
+        void progressNullTest() {
+
+            List<Task> actual = taskRepository.findAll(Specification.where(
+                    TaskSpecificationHelper.fetchUser().and(
+                            TaskSpecificationHelper.progress(null)
+                    )
+            ));
+
+            int expected = 30;
+
+            assertEquals(expected, actual.size());
         }
 
     }

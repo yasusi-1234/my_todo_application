@@ -5,8 +5,8 @@ import lombok.Getter;
 public enum Progress {
 
     REGISTER("完了"),
-    WORKING("作業中"),
-    NOT_START("未着手");
+    NOT_REGISTER("未完了"),
+    ALL("全て");
 
     @Getter
     private final String viewName;
