@@ -20,6 +20,42 @@
 
   <link rel="stylesheet" href="../../static/style/task_home/task_home.css" th:href="@{/style/task_home/task_home.css}">
 
+  <!-- vue.js -->
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+
+  <script>
+    /** this is sample data*/
+    const sample = [
+      {
+        taskId: 1, taskName: 'タスク1', startDate: '2010-01-01', endDate: '2010-01-10',
+        detail: 'This is sample task1.', importance:'普通', progress: 50, notice: true
+      },
+      {
+        taskId: 2, taskName: 'タスク2', startDate: '2010-01-01', endDate: '2010-01-15',
+        detail: 'This is sample task2.', importance:'高い', progress: 50, notice: true
+      },
+      {
+        taskId: 3, taskName: 'タスク3', startDate: '2010-01-05', endDate: '2010-01-16',
+        detail: 'This is sample task3.', importance:'低い', progress: 50, notice: false
+      },
+      {
+        taskId: 4, taskName: 'タスク4', startDate: '2010-01-05', endDate: '2010-01-18',
+        detail: 'This is sample task4.', importance:'普通', progress: 50, notice: true
+      },
+      {
+        taskId: 5, taskName: 'タスク5', startDate: '2010-01-10', endDate: '2010-01-20',
+        detail: 'This is sample task5.', importance:'極高', progress: 50, notice: true
+      },
+      {
+        taskId: 6, taskName: 'タスク6', startDate: '2010-01-21', endDate: '2010-01-25',
+        detail: 'This is sample task6.', importance:'極高', progress: 50, notice: true
+      },
+      {
+        taskId: 7, taskName: 'タスク7', startDate: '2010-01-25', endDate: '2010-02-01',
+        detail: 'This is sample task7.', importance:'極低', progress: 50, notice: false
+      },
+    ];
+  </script>
   <title>タスクホーム</title>
 </head>
 
@@ -43,146 +79,359 @@
 
       <div class="content">
         <section class="head">
-          <div class="head-item">
+          <div class="head-item head-flex">
+            <h1 class="head-title">タスク管理</h1>
             <div class="head-name" th:text="|ようこそ ${username} さん|">ようこそ 山田 さん</div>
           </div>
-          <div class="head-item">
-            <h1 class="head-title">タスク管理</h1>
-          </div>
-          <div class="head-notice">
+
+          <div class="head-notice" id="head-notice">
             <ul class="head-notice-ul">
-              <li class="head-notice-li head-notice-text">
+              <li class="head-notice-li head-notice-text" v-if="isEmpty">
                 <span class="material-icons icon-normal">
                   check_circle
                 </span>
                 現在通知は有りません
               </li>
-              <li class="head-notice-li head-notice-text">
+              <!-- <li class="head-notice-li head-notice-text" v-if="isEmpty">
                 <span class="material-icons icon-warn">
                   error
                 </span>
                 Task2 は現在終了していません!!
-              </li>
-              <li class="head-notice-li head-notice-text">
-                <span class="material-icons icon-warn">
+              </li> -->
+              <li class="head-notice-li head-notice-text" 
+              v-for="(notice, index) in noticeObjects">
+                <span class="material-icons" :class="notice.late ? 'icon-warn' : 'icon-normal'">
                   error
                 </span>
-                Task3 は現在終了していません!!
+                {{ notice.taskName }} は {{ notice.message }}
               </li>
             </ul>
           </div>
         </section>
 
-        <main class="main">
-          <section class="main-head">
-            <div class="main-head-add">
-              <button class="btn-close btn">
-                <span class="material-icons btn-icon">add_circle_outline</span>
-                <span class="btn-text">新規タスク登録</span>
-              </button>
-            </div>
-            <div class="main-head-search">
-              検索フォーム設置
-            </div>
+        <!-- タスクの詳細全体 -->
+        <div class="main-container">
+          <main class="main">
+            <!-- ヘッダー部分 -->
+            <section class="main-head">
 
-          </section>
+              <div class="main-title">
+                タスクリスト
+              </div>
 
-          <section class="main-details task">
-            <div class="task-details">
-              <table class="task-table">
-                <tbody>
-                  <tr class="task-table-tr">
-                    <th class="task-table-th">タスク名</th>
-                    <th class="task-table-th">開始日時</th>
-                    <th class="task-table-th">終了日時</th>
-                    <th class="task-table-th">重要度</th>
-                    <th class="task-table-th">進捗度</th>
-                  </tr>
-                  <tr class="task-table-tr">
-                    <td class="task-table-td">タスク1</td>
-                    <td class="task-table-td">2020-01-01</td>
-                    <td class="task-table-td">2020-01-09</td>
-                    <td class="task-table-td">重要</td>
-                    <td class="task-table-td">55％</td>
-                  </tr>
-                  <tr class="task-table-tr">
-                    <td class="task-table-td">タスク2</td>
-                    <td class="task-table-td">2020-01-07</td>
-                    <td class="task-table-td">2020-01-15</td>
-                    <td class="task-table-td">重要</td>
-                    <td class="task-table-td">10％</td>
-                  <tr class="task-table-tr">
-                    <td class="task-table-td">タスク1</td>
-                    <td class="task-table-td">2020-01-01</td>
-                    <td class="task-table-td">2020-01-09</td>
-                    <td class="task-table-td">重要</td>
-                    <td class="task-table-td">55％</td>
-                  </tr>
-                  <tr class="task-table-tr">
-                    <td class="task-table-td">タスク2</td>
-                    <td class="task-table-td">2020-01-07</td>
-                    <td class="task-table-td">2020-01-15</td>
-                    <td class="task-table-td">重要</td>
-                    <td class="task-table-td">10％</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div class="task-chart">
-              チャート画面
-            </div>
-          </section>
+              <div class="main-head-right">
+                <div class="main-head-add">
+                  <span class="material-icons">
+                    add_circle_outline
+                  </span>
+                  追加
+                </div>
+                <div class="main-head-search">
+                  <span class="material-icons">
+                    search
+                  </span>
+                  検索
+                </div>
+              </div>
 
-        </main>
+            </section>
+
+            <!-- 下部、タスクの詳細部分 -->
+            <section class="main-bottom" id="vue">
+
+              <!-- タスク詳細表 -->
+              <div class="task-detail-out"> 
+                <div class="task-detail" ref="task_details_area"> <!-- has scroll -->
+                  <task-details :tasks="taskBars" ref="task_details" @task-scroll="taskBarScrollRequest"></task-details>
+                </div>
+              </div>
+
+              <div class="task-graph" id="task-graph" ref="task_graph_area"> <!-- has scroll -->
+                <div class="graph-area">
+                  <!-- 日付情報表示部分 -->
+                  <calendar-head v-for="(myDate, myDatesIndex) in myDates" :key="myDatesIndex" :month="myDate"
+                    ref="calendar"></calendar-head>
+                </div>
+                <!-- タスクバー -->
+                <task-bars :taskbars="taskBars" ref="task_bar" @task-scroll="taskDetailsScrollRequest"></task-bars>
+
+              </div>
+
+            </section>
+
+          </main>
+        </div>
 
       </div>
     </div>
 
-    <div class="back-container in-view">
+    <!-- back-form -->
+    <!-- <div class="back-container in-view"> -->
+    <div class="back-container" id="back-container">
       <div class="form-container">
-        <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskRegisterForm}">
+        <!--更新用フォーム -->
+        <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskRegisterForm}" id="update-form" name="updateForm">
+
+          <div class="form-item form-item-top">
+            <h2 class="form-title">タスク更新</h2>
+          </div>
+
+          <input type="hidden" id="update-task-id" name="taskId">
+
+          <div class="form-error">※ タスク名は必須項目です</div>
+          <div class="form-item">
+            <label class="form-label" for="update-task-name">タスク名: </label>
+            <input type="text" id="update-task-name" class="form-text" name="taskName">
+          </div>
+
+          <div class="form-error">※ 開始時期は必須項目です</div>
+          <div class="form-item">
+            <label class="form-label" for="update-start-date">開始時期: </label>
+            <input type="date" name="startDate" id="update-start-date" class="form-datetime">
+          </div>
+
+          <div class="form-error">※ 終了時期は必須項目です</div>
+          <div class="form-item">
+            <label class="form-label" for="update-end-date">終了時期: </label>
+            <input type="date" name="endDate" id="update-end-date" class="form-datetime">
+          </div>
+
+          <div class="form-item">
+            <label class="form-label" for="update-detail">詳細: </label>
+            <textarea name="detail" id="update-detail" cols="30" rows="3" class="form-textarea"></textarea>
+          </div>
+
+          <div class="form-error">※ 重要度の選択は必須項目です</div>
+          <div class="form-item">
+            <label class="form-label" for="update-importance">重要度: </label>
+            <select name="importance" id="update-importance" class="form-select">
+              <option value="VERY_HIGH">極高</option>
+              <option value="HIGH">高い</option>
+              <option value="NORMAL">普通</option>
+              <option value="LOW">低い</option>
+              <option value="VERY_LOW">極低</option>
+            </select>
+          </div>
+
+          <div class="form-error">※ 値は0以上100以下の数値で指定してください</div>
+          <div class="form-item">
+            <label class="form-label" for="update-progress">進捗度: </label>
+            <input type="number" max="100" min="0" id="update-progress" class="form-text" name="progress">
+          </div>
+
+          <div class="form-error">※ 通知設定は必須項目です</div>
+          <div class="form-item">
+            <label class="form-label">重要度: </label>
+            <input type="radio" name="notice" value="true">通知
+            <input type="radio" name="notice" value="false">通知しない
+          </div>
+
+          <div class="form-item form-item-bottom">
+
+            <button type="submit" class="btn-close back-btn" id="updateBtn">
+              <span class="material-icons btn-icon">app_registration</span>
+              <span class="btn-text">更新</span>
+            </button>
+
+            <button type="button" class="btn-close back-btn btn-cancel">
+              <span class="btn-text">キャンセル</span>
+            </button>
+
+          </div>
+        </form>
+        <!--新規登録用フォーム -->
+        <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskRegisterForm}"
+         id="register-form" name="register-form">
 
           <div class="form-item form-item-top">
             <h2 class="form-title">タスク登録</h2>
           </div>
 
+          <div class="form-error">※ タスク名は必須項目です</div>
           <div class="form-item">
-            <label class="form-label" for="task-name">タスク名: </label>
-            <input type="text" id="task-name" class="form-text">
+            <label class="form-label" for="register-task-name">タスク名: </label>
+            <input type="text" id="register-task-name" class="form-text" name="taskName">
           </div>
+
+          <div class="form-error">※ 開始時期は必須項目です</div>
           <div class="form-item">
-            <label class="form-label" for="start-time">開始時期: </label>
-            <input type="datetime-local" name="startTime" id="start-time" class="form-datetime">
+            <label class="form-label" for="register-start-date">開始時期: </label>
+            <input type="date" name="startDate" id="register-start-date" class="form-datetime">
           </div>
+
+          <div class="form-error">※ 終了時期は必須項目です</div>
           <div class="form-item">
-            <label class="form-label" for="end-time">開始時期: </label>
-            <input type="datetime-local" name="endTime" id="end-time" class="form-datetime">
+            <label class="form-label" for="register-end-date">終了時期: </label>
+            <input type="date" name="endDate" id="register-end-date" class="form-datetime">
           </div>
+
+
           <div class="form-item">
-            <label class="form-label" for="detail">詳細: </label>
-            <textarea name="detail" id="detail" cols="30" rows="5" class="form-textarea"></textarea>
+            <label class="form-label" for="register-detail">詳細: </label>
+            <textarea name="detail" id="register-detail" cols="30" rows="3" class="form-textarea"></textarea>
           </div>
+
+          <div class="form-error">※ 重要度の選択は必須項目です</div>
           <div class="form-item">
-            <label class="form-label" for="importance">重要度: </label>
-            <select name="importance" id="importance">
-              <option value="">重要</option>
-              <option value="">普通</option>
+            <label class="form-label" for="register-importance">重要度: </label>
+            <select name="importance" id="register-importance">
+              <option value="VERY_HIGH">極高</option>
+              <option value="HIGH">高い</option>
+              <option value="NORMAL">普通</option>
+              <option value="LOW">低い</option>
+              <option value="VERY_LOW">極低</option>
             </select>
           </div>
+
+          <div class="form-error">※ 値は0以上100以下の数値で指定してください</div>
           <div class="form-item">
-            <label class="form-label" for="progress">進捗度: </label>
-            <input type="number" max="100" min="0" id="progress" class="form-text">
+            <label class="form-label" for="register-progress">進捗度: </label>
+            <input type="number" max="100" min="0" id="register-progress" class="form-text" name="progress">
           </div>
+
+
           <div class="form-item">
-            <label class="form-label" for="notice">重要度: </label>
-            <input type="radio">通知
+            <label class="form-label" for="register">重要度: </label>
+            <input type="radio" id="register-notice">通知
           </div>
 
           <div class="form-item form-item-bottom">
 
-            <button type="submit" class="btn-close">
+            <button type="submit" class="btn-close back-btn" id="register-btn">
               <span class="material-icons btn-icon">app_registration</span>
               <span class="btn-text">登録</span>
+            </button>
+
+            <button type="button" class="btn-close back-btn btn-cancel">
+              <span class="btn-text">キャンセル</span>
+            </button>
+
+          </div>
+        </form>
+
+        <!--検索用フォーム -->
+        <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskSearchForm}"
+         id="search-form" name="search-form">
+
+          <div class="form-item form-item-top">
+            <h2 class="form-title">タスク検索</h2>
+          </div>
+
+          <div class="form-error">※</div>
+          <div class="form-item">
+            <label class="form-label" for="search-task-name">タスク名: </label>
+            <input type="text" id="search-task-name" class="form-text" name="taskName">
+          </div>
+
+          <div class="form-error">※ 終了時期以降の値が設定されています</div>
+          <div class="form-item">
+            <label class="form-label" for="search-start-date">開始時期: </label>
+            <input type="date" name="startDate" id="search-start-date" class="form-datetime">
+          </div>
+
+          <div class="form-error">※ 開始時期以前の値が設定されています</div>
+          <div class="form-item">
+            <label class="form-label" for="search-end-date">終了時期: </label>
+            <input type="date" name="endDate" id="search-end-date" class="form-datetime">
+          </div>
+
+          <div class="form-error">※</div>
+          <div class="form-item">
+            <label class="form-label" for="search-details">詳細: </label>
+            <input type="text" id="search-details" class="form-text" name="taskName">
+          </div>
+
+          <div class="form-error">※</div>
+          <div class="form-item">
+            <label class="form-label" for="search-importance">重要度: </label>
+            <input type="checkbox" name="importance" value="VERY_HIGH"><label class="form-label-check" for="">極高</label>
+            <input type="checkbox" name="importance" value="HIGH"><label class="form-label-check" for="">高い</label>
+            <input type="checkbox" name="importance" value="NORMAL"><label class="form-label-check" for="">普通</label>
+            <input type="checkbox" name="importance" value="LOW"><label class="form-label-check" for="">低い</label>
+            <input type="checkbox" name="importance" value="VERY_LOW"><label class="form-label-check" for="">極低</label>
+          </div>
+
+          <div class="form-error">※ 値は0以上100以下の数値で指定してください</div>
+          <div class="form-item">
+            <label class="form-label" for="search-progress">進捗度: </label>
+            <div class="form-item-radios">
+              <input type="radio" name="progress" value="REGISTER">完了
+              <input type="radio" name="progress" value="NOT_REGISTER">未完了
+              <input type="radio" name="progress" value="ALL">全て
+            </div>
+          </div>
+
+          <div class="form-item form-item-bottom">
+
+            <button type="submit" class="btn-close back-btn" id="search-btn">
+              <span class="material-icons btn-icon">app_registration</span>
+              <span class="btn-text">検索</span>
+            </button>
+
+            <button type="button" class="btn-close back-btn btn-cancel">
+              <span class="btn-text">キャンセル</span>
+            </button>
+
+          </div>
+        </form>
+
+        <!--削除用フォーム -->
+        <form method="post" action="#" th:action="@{/}" class="form"
+         id="delete-form" name="delete-form">
+
+          <div class="form-item form-item-top">
+            <h2 class="form-title">タスク削除</h2>
+          </div>
+
+          <div class="form-error show">※ 以下のタスクを削除します</div>
+
+          <input type="hidden" name="taskId" value="taskId">
+
+          <div class="form-error">※</div>
+          <div class="form-item">
+            <label class="form-label" for="search-task-name">タスク名: </label>
+            <div id="delete-task-name"></div>
+          </div>
+
+          <div class="form-error">※ 終了時期以降の値が設定されています</div>
+          <div class="form-item">
+            <label class="form-label" for="search-start-date">開始時期: </label>
+            <div id="delete-start-date"></div>
+          </div>
+
+          <div class="form-error">※ 開始時期以前の値が設定されています</div>
+          <div class="form-item">
+            <label class="form-label" for="search-end-date">終了時期: </label>
+            <div id="delete-end-date"></div>
+          </div>
+
+          <div class="form-error">※</div>
+          <div class="form-item">
+            <label class="form-label" for="search-details">詳細: </label>
+            <div id="delete-task-detail"></div>
+          </div>
+
+          <div class="form-error">※</div>
+          <div class="form-item">
+            <label class="form-label" for="search-importance">重要度: </label>
+            <div id="delete-importance"></div>
+          </div>
+
+          <div class="form-error">※ 値は0以上100以下の数値で指定してください</div>
+          <div class="form-item">
+            <label class="form-label" for="search-progress">進捗度: </label>
+            <div id="delete-progress"></div>
+          </div>
+
+          <div class="form-item form-item-bottom">
+
+            <button type="submit" class="btn-close back-btn" id="delete-btn">
+              <span class="material-icons btn-icon">app_registration</span>
+              <span class="btn-text">削除</span>
+            </button>
+
+            <button type="button" class="btn-close back-btn btn-cancel">
+              <span class="btn-text">キャンセル</span>
             </button>
 
           </div>
@@ -190,7 +439,21 @@
       </div>
     </div>
 
+    <!-- vue sample-->
+    <!-- <div style="width: 100%; height: 10px; background-color: black;"></div> -->
+    
   </div>
+
+
+  <script src="../../static/js/formValidation.js"></script>
+  <script src="../../static/js/registerFormValidation.js"></script>
+  <script src="../../static/js/searchFormValidation.js"></script>
+  <script src="../../static/js/deleteForm.js"></script>
+  <script src="../../static/js/dateHelper.js"></script>
+  <script src="../../static/js/makeTaskBar.js"> </script>
+  <script src="../../static/js/task.js"></script>
+  <script src="../../static/js/noticeHelper.js"></script>
+  <script src="../../static/js/notice.js"></script>
 </body>
 
 </html>

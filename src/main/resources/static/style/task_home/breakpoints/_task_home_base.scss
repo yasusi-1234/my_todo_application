@@ -10,9 +10,10 @@ body {
 .header {
     border-bottom: 1px solid #e3e3e3;
     margin-bottom: 5px;
+    background-color: #201f24;
 
     &-inner {
-        margin: 8px;
+        padding: 8px;
 
         display: flex;
         justify-content: space-between;
@@ -28,9 +29,14 @@ body {
     margin: 0 8px;
     margin-bottom: 20px;
 
+    &-flex {
+        justify-content: space-between;
+        display: flex;
+    }
+
     &-title {
         color: $cNaturalGray;
-        font-size: 20px;
+        font-size: 24px;
     }
 
     &-name {
@@ -43,7 +49,7 @@ body {
         background-color: #e9f1e9;
         border: 1px solid #3a9990;
         border-radius: 4px;
-        margin: 10px;
+        margin: 0 10px;
 
         max-height: 100px;
         overflow-y: scroll;
@@ -94,6 +100,53 @@ body {
 
 .main {
     margin: 0 8px;
+
+    &-head {
+        
+        
+            background-color: #0e3e0e;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 40px;
+
+            &-right {
+                display: flex;
+                width: 120px;
+                justify-content: space-evenly;
+                
+                font-size: 12px;
+            }
+    
+            &-add, &-search{
+                margin-right: 5px;
+                transition: all .3s;
+                cursor: pointer;
+    
+                display: flex;
+                & .material-icons {
+                    font-size: 18px;
+                }
+
+                &:hover {
+                    color: #9bdee7;
+                }
+            }
+        
+
+
+    }
+
+    &-title {
+        font-size: 12px;
+        margin-left: 10px;
+    }
+
+}
+
+.btn-area {
+    display: flex;
 }
 
 .global-container {
@@ -124,14 +177,17 @@ body {
 
 /** フォーム部分 */
 .form {
-    position: relative;
+    // position: relative;
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
     background-color: white;
 
     &-item {
         justify-content: flex-start;
 
         &-bottom {
-            justify-content: center;
+            justify-content: space-evenly;
         }
 
         &-top {
@@ -143,6 +199,25 @@ body {
         position: fixed;
         width: 100%;
     }
+
+    &-error {
+        opacity: 0;
+        &.show {
+            opacity: 1;
+        }
+    }
+
+    &-label {
+        &-check {
+            margin: 0;
+        }
+    }
+}
+
+.select-form {
+    z-index: 100;
+    opacity: 1;
+    visibility: visible;
 }
 
 .task {
@@ -150,46 +225,6 @@ body {
     &-details {
         max-height: 200px;
         overflow-y: scroll;
-    }
-
-    /** テーブル */
-    &-table {
-        // display: flex;
-        // justify-content: center;
-        width: 100%;
-        border-collapse: separate;
-        border-spacing: 3px;
-        position: relative;
-
-        &-th {
-            background-color: #3a9990;
-            color: #e9f1e9;
-            border-radius: 3px;
-            position: sticky;
-            top: 0;
-        }
-
-        &-td {
-            // border: 1px solid #9e9e9e;
-            color: $cNaturalGray;
-
-        }
-
-        &-tr {
-
-            &:nth-child(even) {
-                .task-table-td {
-                    background-color: #e9f5f4;
-                }
-            }
-
-            &:nth-child(odd) {
-                .task-table-td {
-                    background-color: #e1e6f5;
-                }
-            }
-        }
-
     }
 }
 
@@ -204,4 +239,206 @@ body {
     &-text {
         font-size: 12px;
     }
+}
+
+/* キャンセルボタン */
+.btn-cancel {
+    &::after, &::before {
+        background-color: gray;
+    }
+}
+
+.back-btn {
+    width: 100px;
+}
+
+/** taskの詳細部分 */
+.task {
+
+    &-ul {
+        list-style: none;
+        padding: 0;
+        font-size: 12px;
+
+        margin-bottom: 0;
+    }
+
+    &-li {
+        border-bottom: 1px solid gray;
+        transition: all 1s;
+    }
+
+    &-label {
+        width: 55px;
+    }
+
+    &-row {
+        display: flex;
+    }
+
+    &-item {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    &-right {
+        display: flex;
+        align-items: flex-end;
+    }
+
+    &-left {
+        margin-left: 5px;
+    }
+
+    &-detail {
+        overflow-y: scroll;
+        height: 383px;
+    }
+
+}
+
+.active {
+    background-color: #d8ebf9;
+    transition: all .5s;
+}
+
+.btn-simple {
+    height: 28px;
+
+    margin: 0 10px 5px 0;
+}
+
+/** 表のカレンダー部分 */
+.year-month {
+    background-color: #4646e7;
+    color: white;
+    font-size: 12px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-weight: 800;
+
+    border-left: 1px solid white;
+    border-right: 1px solid white;
+
+    /* jsのstyleで指定する */
+    width: 25px * 31;
+    
+}
+
+.days {
+    display: flex;
+    // width: 100%;
+}
+
+.day {
+    display: flex;
+    flex-shrink: 0;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px;
+    width: 25px;
+
+    border-left: 1px solid #9b9b9b;
+    border-bottom: 1px solid #9b9b9b;
+
+    font-size: 14px;
+    font-weight: 600;
+
+    height: 358px;
+
+    &-inner {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+}
+
+.day-of-week {
+    position: relative;
+
+    @include p-base($height: 1px, $width: 26px, $left: -50%, $top: 100%){
+        background-color: #9b9b9b;
+    };
+}
+
+.task-graph {
+    width: 100%;
+    overflow: scroll;
+
+    position: relative;
+    height: 400px;
+}
+
+.graph-area {
+    position: relative;
+    z-index: 10;
+
+    display: flex;
+}
+
+.task-calendar-head {
+    position: relative;
+    z-index: 15;
+}
+
+.saturday {
+    background-color: #d2e4f3;
+    color: #3f51b5;
+}
+
+.sunday {
+    background-color: #fbcdcd;
+    color: #db0000;
+}
+
+/** タスクバー */
+.task-bar {
+    position: absolute;
+    z-index: 20;
+
+    /* jsにて各要素にスタイルで充てる必要あり */
+    top: 85px;
+    left: 100px;
+
+    transition: all .5s;
+    
+    &-name {
+        font-size: 12px;
+        position: relative;
+        z-index: 10;
+
+        font-weight: 600;
+    }
+
+    &-box {
+        position: relative;
+        z-index: 10;
+        height: 20px;
+        // このwidthはJs側で設定
+        width: 150px;
+        background-color: #b9b9b9;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    &-progress {
+        position: absolute;
+        z-index: 5;
+        background-color: #6fd960;
+        top: 0;
+        left: 0;
+        // このwidthはjs側で決定
+        width: 100px;
+        height: 100%;
+    }
+}
+
+.box-active {
+    box-shadow: 0 0 10px 4px #fb8c00;
+    transition: all .5s;
 }

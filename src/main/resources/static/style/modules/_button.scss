@@ -89,3 +89,22 @@
 		z-index: 100;
 	}
 }
+
+.btn-simple {
+	position: relative;
+	z-index: 10;
+
+    background: none;
+	outline: none;
+	appearance: none;
+	border: none;
+	overflow: hidden;
+
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background-color: #ebebeb;
+	color: #333;
+	border: 1px solid #ccc;
+}
