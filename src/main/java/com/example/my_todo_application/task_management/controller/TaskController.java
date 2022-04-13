@@ -19,7 +19,6 @@ import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBui
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Controller
@@ -48,11 +47,11 @@ public class TaskController {
             Model model) {
 
         List<Task> userTasks = taskService.findAllTaskByUserId(user.getAppUser().getAppUserId());
-        List<Task> userNoticeTasks = taskService.findTasksOf(
-                user.getAppUser().getAppUserId(), true, LocalDateTime.now());
+//        List<Task> userNoticeTasks = taskService.findTasksOf(
+//                user.getAppUser().getAppUserId(), true, LocalDateTime.now());
 
         model.addAttribute("userTasks", userTasks);
-        model.addAttribute("noticeTasks", userNoticeTasks);
+//        model.addAttribute("noticeTasks", userNoticeTasks);
         model.addAttribute("username", user.getAppUser().getLastName());
         return "task/task-home";
     }
@@ -113,8 +112,8 @@ public class TaskController {
         Task task = new Task();
         task.setTaskId(form.getTaskId());
         task.setTaskName(form.getTaskName());
-        task.setStartDatetime(form.getStartDateTime());
-        task.setEndDatetime(form.getEndDateTime());
+        task.setStartDate(form.getStartDate());
+        task.setEndDate(form.getEndDate());
         task.setDetail(form.getDetail());
         task.setImportance(form.getImportance());
         task.setNotice(form.isNotice());
