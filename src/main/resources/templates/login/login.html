@@ -8,7 +8,7 @@
         content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
     <link rel="stylesheet" href="../../static/style/bender/bootstrap-reboot.css"
-        th:href="@{/styles/bender/bootstrap-reboot.css}">
+        th:href="@{/style/bender/bootstrap-reboot.css}">
 
     <!-- icon -->
     <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
@@ -63,7 +63,12 @@
                 </div>
             </form>
         </div>
-
+        <div class="go-register">
+            <div class="go-register-p">まだ登録していない方はこちらから登録→</div>
+            <div class="go-register-p">
+                <a href="#" class="go-register-a" th:href="@{/user/register}">ユーザー登録</a>
+            </div>
+        </div>
     </div>
 </body>
 
