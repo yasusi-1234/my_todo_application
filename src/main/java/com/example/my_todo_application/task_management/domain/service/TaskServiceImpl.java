@@ -8,6 +8,7 @@ import com.example.my_todo_application.task_management.domain.service.exception.
 import com.example.my_todo_application.task_management.domain.service.specification.TaskSpecificationHelper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -86,7 +87,8 @@ public class TaskServiceImpl implements TaskService {
                         .and(TaskSpecificationHelper.afterDate(startDate))
                         .and(TaskSpecificationHelper.beforeDate(endDate))
                         .and(TaskSpecificationHelper.inImportance(importance))
-                        .and(TaskSpecificationHelper.progress(progress))
+                        .and(TaskSpecificationHelper.progress(progress)),
+                Sort.by(Sort.Direction.ASC, "startDate")
         );
     }
 
