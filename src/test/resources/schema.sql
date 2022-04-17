@@ -1,5 +1,5 @@
 create table if not exists ROLE(
-    role_id bigint auto_increment primary key,
+    role_id int auto_increment primary key,
     role_name varchar(30) not null
 );
 
@@ -9,7 +9,7 @@ create table if not exists app_user (
     last_name varchar(255) not null,
     mail_address varchar(255) not null,
     password varchar(255) not null,
-    role_id bigint not null,
+    role_id int not null,
     foreign key (role_id) references role(role_id)
 );
 
