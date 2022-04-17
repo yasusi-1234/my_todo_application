@@ -56,7 +56,7 @@ public class ToDoSecurity extends WebSecurityConfigurerAdapter {
         http.logout()
                 .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 // ログアウト成功時の遷移先
-                .logoutSuccessUrl("/login/login")
+                .logoutSuccessUrl("/login")
                 // 削除するクッキー
                 .deleteCookies("JSESSIONID")
                 // ログアウト時のセッション破棄を有効化
