@@ -24,10 +24,10 @@ public class TaskRegisterForm {
     @NotBlank
     private String taskName;
     /** タスク開始時刻 */
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate startDate;
     /** タスク終了時刻 */
-    @DateTimeFormat(pattern = "yyyy/MM/dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate endDate;
     /** タスクの詳細 */
     private String detail;
