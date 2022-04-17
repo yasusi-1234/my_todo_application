@@ -1,3 +1,6 @@
+const importanceValues = {VERY_HIGH: '極高', HIGH: '高い', NORMAL: '普通', LOW: '低い', VERY_LOW: '極低'};
+
+
 Vue.component('calendar-head', {
     props: ['month'],
     template: 
@@ -52,50 +55,53 @@ Vue.component('task-bars', {
 Vue.component('task-details', {
     props: ['tasks'],
     template: `
-    <ul class="task-ul">
-        <li class="task-li" v-for="(task, index) in tasks" :key="index" :ref="task.taskId" 
-        :class="{ active: task.isActive }" @click="scrollToSpecifiedTaskBar(task.taskId)">
-            <div class="task-item">
-                <div class="task-left">
-                    <div class="task-row">
-                         <div class="task-label">タスク名:</div>
-                         <div>{{ task.taskName }}</div>
+    <div>
+        <div v-if="tasks.length === 0" class="task-ul-none">指定の期間のタスクは登録されていません</div>
+        <ul class="task-ul">
+            <li class="task-li" v-for="(task, index) in tasks" :key="index" :ref="task.taskId" 
+            :class="{ active: task.isActive }" @click="scrollToSpecifiedTaskBar(task.taskId)">
+                <div class="task-item">
+                    <div class="task-left">
+                        <div class="task-row">
+                            <div class="task-label">タスク名:</div>
+                            <div>{{ task.taskName }}</div>
+                        </div>
+                        <div class="task-row">
+                            <div class="task-label">期間:</div>
+                            <div>{{ task.startDate}} ~ {{ task.endDate }}</div>
+                        </div>
+                        <div class="task-row">
+                            <div class="task-label">重要度:</div>
+                            <div>{{ importanceValues[task.importance] }}</div>
+                        </div>
+                        <div class="task-row">
+                            <div class="task-label">進捗度:</div>
+                            <div>{{ task.progress }}%</div>
+                        </div>
+                        <div class="task-row">
+                            <div class="task-label">詳細:</div>
+                            <div>{{ task.detail }}</div>
+                        </div>
                     </div>
-                    <div class="task-row">
-                         <div class="task-label">期間:</div>
-                         <div>{{ task.startDate}} ~ {{ task.endDate }}</div>
-                    </div>
-                    <div class="task-row">
-                         <div class="task-label">重要度:</div>
-                         <div>{{ task.importance }}</div>
-                    </div>
-                    <div class="task-row">
-                         <div class="task-label">進捗度:</div>
-                         <div>{{ task.progress }}%</div>
-                    </div>
-                    <div class="task-row">
-                         <div class="task-label">詳細:</div>
-                         <div>{{ task.detail }}</div>
-                    </div>
-                </div>
-                
-                <div class="task-right">
-                    <button class="btn-simple" @click="updateTaskRequest($event, task)">
+                    
+                    <div class="task-right">
+                        <button class="btn-simple" @click="updateTaskRequest($event, task)">
+                            <span class="material-icons">
+                                text_snippet
+                                </span>
+                            <span>更新</span>
+                        </button>
+                        <button class="btn-simple" @click="deleteTaskRequest($event, task)">
                         <span class="material-icons">
-                            text_snippet
+                            delete
                             </span>
-                        <span>更新</span>
-                    </button>
-                    <button class="btn-simple" @click="deleteTaskRequest($event, task)">
-                    <span class="material-icons">
-                        delete
-                        </span>
-                    <span>削除</span>
-                    </button>
+                        <span>削除</span>
+                        </button>
+                    </div>
                 </div>
-            </div>
-        </li>
-    </ul>
+            </li>
+        </ul>
+    </div>
     `,
     methods: {
         /** 指定のタスクIDの格納されている部分までスクロールする */
@@ -126,8 +132,14 @@ let now = new Date();
 let minDate = getMinimumDateOfTasks(sample);
 // taskの終了の最大値の日付データ
 let maxDate = getMaxDateOfTasks(sample);
+
+let dummyDate = new Date();
 // 日付データのカレンダー
-let myDates = getCalendarObjects(minDate, maxDate);
+let myDates = minDate.length !== 0 ? getCalendarObjects(minDate, maxDate)
+: getCalendarObjects(new Date(dummyDate.getFullYear(), dummyDate.getMonth(), 0),
+ new Date(dummyDate.getFullYear(), dummyDate.getMonth() + 2, 0));
+
+console.log(minDate, maxDate, myDates)
 
 let taskBars = createTaskBars(sample);
 

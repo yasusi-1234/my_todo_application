@@ -24,8 +24,8 @@ import java.util.List;
 @Controller
 @RequestMapping("task")
 @RequiredArgsConstructor
+@SessionAttributes(types = { TaskSearchForm.class })
 public class TaskController {
-
 
     private final TaskService taskService;
 
@@ -39,19 +39,26 @@ public class TaskController {
         return Importance.values();
     }
 
+    @ModelAttribute("taskSearchForm")
+    public TaskSearchForm taskSearchForm() {
+        return new TaskSearchForm();
+    }
+
     @GetMapping("home")
     public String getTaskHome(
             @AuthenticationPrincipal AppUserDetails user,
             @ModelAttribute("taskSearchForm") TaskSearchForm taskSearchForm,
-            @ModelAttribute("TaskRegisterFrom") TaskRegisterForm taskRegisterForm,
+            @ModelAttribute("taskRegisterForm") TaskRegisterForm taskRegisterForm,
             Model model) {
-
-        List<Task> userTasks = taskService.findAllTaskByUserId(user.getAppUser().getAppUserId());
-//        List<Task> userNoticeTasks = taskService.findTasksOf(
-//                user.getAppUser().getAppUserId(), true, LocalDateTime.now());
+        List<Task> userTasks = taskService.findTasksOf(
+                user.getAppUser().getAppUserId(),
+                taskSearchForm.getSearchTaskName(),
+                taskSearchForm.getFromDate(),
+                taskSearchForm.getToDate(),
+                taskSearchForm.getImportanceList(),
+                taskSearchForm.getSearchProgress());
 
         model.addAttribute("userTasks", userTasks);
-//        model.addAttribute("noticeTasks", userNoticeTasks);
         model.addAttribute("username", user.getAppUser().getLastName());
         return "task/task-home";
     }
@@ -66,11 +73,9 @@ public class TaskController {
             RedirectAttributes redirectAttributes,
             Model model
     ) {
-
         if (bindingResult.hasErrors()) {
             return getTaskHome(user, taskSearchForm, taskRegisterForm, model);
         }
-
 
         Task saveTask = makeTaskFromForm(taskRegisterForm, user.getAppUser());
         taskService.saveTask(saveTask);

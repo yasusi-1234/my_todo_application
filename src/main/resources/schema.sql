@@ -4,17 +4,17 @@ create table if not exists role(
 );
 
 create table if not exists app_user(
-    app_user_id serial primary key,
+    app_user_id bigserial primary key,
     first_name varchar(20) not null,
     last_name varchar(20) not null,
     mail_address varchar(100) not null,
     password varchar(100) not null,
-    role_id bigint,
+    role_id int not null,
     foreign key (role_id) references role(role_id)
 );
 
 create table if not exists task(
-    task_id serial primary key,
+    task_id bigserial primary key,
     task_name varchar(20) not null,
     start_date date not null,
     end_date date not null,

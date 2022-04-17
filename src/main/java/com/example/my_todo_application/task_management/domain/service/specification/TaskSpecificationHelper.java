@@ -27,9 +27,9 @@ public final class TaskSpecificationHelper {
     public static Specification<Task> fetchUser() {
         return (root, query, cb) -> {
             if (query.getResultType() == Long.class || query.getResultType() == long.class) {
-                root.join(APP_USER);
+                root.join(APP_USER).join(ROLE);
             } else {
-                root.fetch(APP_USER);
+                root.fetch(APP_USER).fetch(ROLE);
             }
             return query.getRestriction();
         };

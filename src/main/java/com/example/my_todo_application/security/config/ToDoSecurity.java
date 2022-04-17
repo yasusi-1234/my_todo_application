@@ -34,8 +34,8 @@ public class ToDoSecurity extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         // アクセス権限の設定
         http.authorizeRequests()
-                // login画面は許可
-                .antMatchers("/login").permitAll()
+                // login画面及びユーザー登録画面は許可
+                .antMatchers("/login", "/user/register").permitAll()
                 // その他は不可
                 .anyRequest().authenticated();
 

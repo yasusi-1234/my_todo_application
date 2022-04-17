@@ -2,12 +2,12 @@ class SearchFormValidation {
     constructor(formName, btnId, cancelBtnName = '.btn-cancel') {
         this.targetForm = document.forms[formName];
         
-        this.taskName = this.targetForm.taskName;
-        this.startDate = this.targetForm.startDate;
-        this.endDate = this.targetForm.endDate;
-        this.detail = this.targetForm.detail;
-        this.importance = this.targetForm.importance;
-        this.progress = this.targetForm.progress;
+        this.taskName = this.targetForm.searchTaskName;
+        this.startDate = this.targetForm.fromDate;
+        this.endDate = this.targetForm.toDate;
+        this.detail = this.targetForm.searchDetail;
+        this.importance = this.targetForm.importanceList;
+        this.progress = this.targetForm.searchProgress;
 
         this.btn = this.targetForm.querySelector(btnId);
 

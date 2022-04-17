@@ -7,7 +7,7 @@
     content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
 
   <link rel="stylesheet" href="../../static/style/bender/bootstrap-reboot.css"
-    th:href="@{/styles/bender/bootstrap-reboot.css}">
+    th:href="@{/style/bender/bootstrap-reboot.css}">
 
   <!-- icon -->
   <link href="https://fonts.googleapis.com/css2?family=Material+Icons" rel="stylesheet">
@@ -21,40 +21,44 @@
   <link rel="stylesheet" href="../../static/style/task_home/task_home.css" th:href="@{/style/task_home/task_home.css}">
 
   <!-- vue.js -->
-  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js" th:src="@{/webjars/vue/2.6.14/vue.min.js}"></script>
 
   <script>
     /** this is sample data*/
-    const sample = [
-      {
-        taskId: 1, taskName: 'タスク1', startDate: '2010-01-01', endDate: '2010-01-10',
-        detail: 'This is sample task1.', importance:'普通', progress: 50, notice: true
-      },
-      {
-        taskId: 2, taskName: 'タスク2', startDate: '2010-01-01', endDate: '2010-01-15',
-        detail: 'This is sample task2.', importance:'高い', progress: 50, notice: true
-      },
-      {
-        taskId: 3, taskName: 'タスク3', startDate: '2010-01-05', endDate: '2010-01-16',
-        detail: 'This is sample task3.', importance:'低い', progress: 50, notice: false
-      },
-      {
-        taskId: 4, taskName: 'タスク4', startDate: '2010-01-05', endDate: '2010-01-18',
-        detail: 'This is sample task4.', importance:'普通', progress: 50, notice: true
-      },
-      {
-        taskId: 5, taskName: 'タスク5', startDate: '2010-01-10', endDate: '2010-01-20',
-        detail: 'This is sample task5.', importance:'極高', progress: 50, notice: true
-      },
-      {
-        taskId: 6, taskName: 'タスク6', startDate: '2010-01-21', endDate: '2010-01-25',
-        detail: 'This is sample task6.', importance:'極高', progress: 50, notice: true
-      },
-      {
-        taskId: 7, taskName: 'タスク7', startDate: '2010-01-25', endDate: '2010-02-01',
-        detail: 'This is sample task7.', importance:'極低', progress: 50, notice: false
-      },
-    ];
+    // const sample = [
+    //   {
+    //     taskId: 1, taskName: 'タスク1', startDate: '2010-01-01', endDate: '2010-01-10',
+    //     detail: 'This is sample task1.', importance:'普通', progress: 50, notice: true
+    //   },
+    //   {
+    //     taskId: 2, taskName: 'タスク2', startDate: '2010-01-01', endDate: '2010-01-15',
+    //     detail: 'This is sample task2.', importance:'高い', progress: 50, notice: true
+    //   },
+    //   {
+    //     taskId: 3, taskName: 'タスク3', startDate: '2010-01-05', endDate: '2010-01-16',
+    //     detail: 'This is sample task3.', importance:'低い', progress: 50, notice: false
+    //   },
+    //   {
+    //     taskId: 4, taskName: 'タスク4', startDate: '2010-01-05', endDate: '2010-01-18',
+    //     detail: 'This is sample task4.', importance:'普通', progress: 50, notice: true
+    //   },
+    //   {
+    //     taskId: 5, taskName: 'タスク5', startDate: '2010-01-10', endDate: '2010-01-20',
+    //     detail: 'This is sample task5.', importance:'極高', progress: 50, notice: true
+    //   },
+    //   {
+    //     taskId: 6, taskName: 'タスク6', startDate: '2010-01-21', endDate: '2010-01-25',
+    //     detail: 'This is sample task6.', importance:'極高', progress: 50, notice: true
+    //   },
+    //   {
+    //     taskId: 7, taskName: 'タスク7', startDate: '2010-01-25', endDate: '2010-02-01',
+    //     detail: 'This is sample task7.', importance:'極低', progress: 50, notice: false
+    //   },
+    // ];
+
+  </script>
+  <script th:inline="javascript">
+    const sample = [[${userTasks}]]
   </script>
   <title>タスクホーム</title>
 </head>
@@ -170,7 +174,7 @@
     <div class="back-container" id="back-container">
       <div class="form-container">
         <!--更新用フォーム -->
-        <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskRegisterForm}" id="update-form" name="updateForm">
+        <form method="post" action="#" th:action="@{/task/register}" class="form" th:object="${taskRegisterForm}" id="update-form" name="updateForm">
 
           <div class="form-item form-item-top">
             <h2 class="form-title">タスク更新</h2>
@@ -240,7 +244,7 @@
           </div>
         </form>
         <!--新規登録用フォーム -->
-        <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskRegisterForm}"
+        <form method="post" action="#" th:action="@{/task/register}" class="form" th:object="${taskRegisterForm}"
          id="register-form" name="register-form">
 
           <div class="form-item form-item-top">
@@ -250,49 +254,52 @@
           <div class="form-error">※ タスク名は必須項目です</div>
           <div class="form-item">
             <label class="form-label" for="register-task-name">タスク名: </label>
-            <input type="text" id="register-task-name" class="form-text" name="taskName">
+            <input type="text" id="register-task-name" class="form-text" name="taskName" th:field="*{taskName}">
           </div>
 
           <div class="form-error">※ 開始時期は必須項目です</div>
           <div class="form-item">
             <label class="form-label" for="register-start-date">開始時期: </label>
-            <input type="date" name="startDate" id="register-start-date" class="form-datetime">
+            <input type="date" name="startDate" id="register-start-date" class="form-datetime" th:field="*{startDate}">
           </div>
 
           <div class="form-error">※ 終了時期は必須項目です</div>
           <div class="form-item">
             <label class="form-label" for="register-end-date">終了時期: </label>
-            <input type="date" name="endDate" id="register-end-date" class="form-datetime">
+            <input type="date" name="endDate" id="register-end-date" class="form-datetime" th:field="*{endDate}">
           </div>
 
 
           <div class="form-item">
             <label class="form-label" for="register-detail">詳細: </label>
-            <textarea name="detail" id="register-detail" cols="30" rows="3" class="form-textarea"></textarea>
+            <textarea name="detail" id="register-detail" cols="30" rows="3" class="form-textarea" th:field="*{detail}"></textarea>
           </div>
 
           <div class="form-error">※ 重要度の選択は必須項目です</div>
           <div class="form-item">
             <label class="form-label" for="register-importance">重要度: </label>
             <select name="importance" id="register-importance">
-              <option value="VERY_HIGH">極高</option>
-              <option value="HIGH">高い</option>
+              <th:block th:each="item : ${importance}">
+                <option value="VERY_HIGH" th:value="${item}" th:text="${item.viewName}">極高</option>
+              </th:block>
+              <!-- <option value="HIGH">高い</option>
               <option value="NORMAL">普通</option>
               <option value="LOW">低い</option>
-              <option value="VERY_LOW">極低</option>
+              <option value="VERY_LOW">極低</option> -->
             </select>
           </div>
 
           <div class="form-error">※ 値は0以上100以下の数値で指定してください</div>
           <div class="form-item">
             <label class="form-label" for="register-progress">進捗度: </label>
-            <input type="number" max="100" min="0" id="register-progress" class="form-text" name="progress">
+            <input type="number" max="100" min="0" id="register-progress" class="form-text" name="progress" th:field="*{progress}">
           </div>
 
 
           <div class="form-item">
             <label class="form-label" for="register">重要度: </label>
-            <input type="radio" id="register-notice">通知
+            <input type="radio" name="notice" value="true">通知
+            <input type="radio" name="notice" value="false">通知しない
           </div>
 
           <div class="form-item form-item-bottom">
@@ -310,7 +317,7 @@
         </form>
 
         <!--検索用フォーム -->
-        <form method="post" action="#" th:action="@{/}" class="form" th:object="${taskSearchForm}"
+        <form method="get" action="#" th:action="@{/task/home}" class="form" th:object="${taskSearchForm}"
          id="search-form" name="search-form">
 
           <div class="form-item form-item-top">
@@ -320,44 +327,49 @@
           <div class="form-error">※</div>
           <div class="form-item">
             <label class="form-label" for="search-task-name">タスク名: </label>
-            <input type="text" id="search-task-name" class="form-text" name="taskName">
+            <input type="text" id="search-task-name" class="form-text" name="searchTaskName" th:field="*{searchTaskName}">
           </div>
 
           <div class="form-error">※ 終了時期以降の値が設定されています</div>
           <div class="form-item">
             <label class="form-label" for="search-start-date">開始時期: </label>
-            <input type="date" name="startDate" id="search-start-date" class="form-datetime">
+            <input type="date" name="fromDate" id="search-start-date" class="form-datetime" th:field="*{fromDate}">
           </div>
 
           <div class="form-error">※ 開始時期以前の値が設定されています</div>
           <div class="form-item">
             <label class="form-label" for="search-end-date">終了時期: </label>
-            <input type="date" name="endDate" id="search-end-date" class="form-datetime">
+            <input type="date" name="toDate" id="search-end-date" class="form-datetime" th:field="*{toDate}">
           </div>
 
           <div class="form-error">※</div>
           <div class="form-item">
             <label class="form-label" for="search-details">詳細: </label>
-            <input type="text" id="search-details" class="form-text" name="taskName">
+            <input type="text" id="search-details" class="form-text" name="searchDetail" th:field="*{searchDetail}">
           </div>
 
           <div class="form-error">※</div>
           <div class="form-item">
             <label class="form-label" for="search-importance">重要度: </label>
-            <input type="checkbox" name="importance" value="VERY_HIGH"><label class="form-label-check" for="">極高</label>
-            <input type="checkbox" name="importance" value="HIGH"><label class="form-label-check" for="">高い</label>
+            <th:block th:each="item : ${importance}">
+              <input type="checkbox" name="importanceList" value="VERY_HIGH" th:value="${item}" ><label class="form-label-check" for="" th:text="${item.viewName}">極高</label>
+            </th:block>
+            <!-- <input type="checkbox" name="importance" value="HIGH"><label class="form-label-check" for="">高い</label>
             <input type="checkbox" name="importance" value="NORMAL"><label class="form-label-check" for="">普通</label>
             <input type="checkbox" name="importance" value="LOW"><label class="form-label-check" for="">低い</label>
-            <input type="checkbox" name="importance" value="VERY_LOW"><label class="form-label-check" for="">極低</label>
+            <input type="checkbox" name="importance" value="VERY_LOW"><label class="form-label-check" for="">極低</label> -->
           </div>
 
           <div class="form-error">※ 値は0以上100以下の数値で指定してください</div>
           <div class="form-item">
             <label class="form-label" for="search-progress">進捗度: </label>
             <div class="form-item-radios">
-              <input type="radio" name="progress" value="REGISTER">完了
+              <th:block th:each="item : ${progress}">
+                <input type="radio" name="searchProgress" value="REGISTER" th:value="${item}" th:text="${item.viewName}">
+              </th:block>
+              <!-- <input type="radio" name="progress" value="REGISTER">完了
               <input type="radio" name="progress" value="NOT_REGISTER">未完了
-              <input type="radio" name="progress" value="ALL">全て
+              <input type="radio" name="progress" value="ALL">全て -->
             </div>
           </div>
 
@@ -376,7 +388,7 @@
         </form>
 
         <!--削除用フォーム -->
-        <form method="post" action="#" th:action="@{/}" class="form"
+        <form method="post" action="#" th:action="@{/task/delete}" class="form"
          id="delete-form" name="delete-form">
 
           <div class="form-item form-item-top">
@@ -445,15 +457,15 @@
   </div>
 
 
-  <script src="../../static/js/formValidation.js"></script>
-  <script src="../../static/js/registerFormValidation.js"></script>
-  <script src="../../static/js/searchFormValidation.js"></script>
-  <script src="../../static/js/deleteForm.js"></script>
-  <script src="../../static/js/dateHelper.js"></script>
-  <script src="../../static/js/makeTaskBar.js"> </script>
-  <script src="../../static/js/task.js"></script>
-  <script src="../../static/js/noticeHelper.js"></script>
-  <script src="../../static/js/notice.js"></script>
+  <script src="../../static/js/formValidation.js" th:src="@{/js/formValidation.js}"></script>
+  <script src="../../static/js/registerFormValidation.js" th:src="@{/js/registerFormValidation.js}"></script>
+  <script src="../../static/js/searchFormValidation.js" th:src="@{/js/searchFormValidation.js}"></script>
+  <script src="../../static/js/deleteForm.js" th:src="@{/js/deleteForm.js}"></script>
+  <script src="../../static/js/dateHelper.js" th:src="@{/js/dateHelper.js}"></script>
+  <script src="../../static/js/makeTaskBar.js" th:src="@{/js/makeTaskBar.js}">  </script>
+  <script src="../../static/js/task.js" th:src="@{/js/task.js}"></script>
+  <script src="../../static/js/noticeHelper.js" th:src="@{/js/noticeHelper.js}"></script>
+  <script src="../../static/js/notice.js" th:src="@{/js/notice.js}"></script>
 </body>
 
 </html>

@@ -14,7 +14,7 @@ import java.util.List;
 public class TaskSearchForm {
 
     /** タスク名 */
-    private String taskName;
+    private String searchTaskName;
     /** 検索したい開始時刻 */
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate fromDate;
@@ -22,10 +22,10 @@ public class TaskSearchForm {
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate toDate;
     /** タスク詳細 */
-    private String detail;
+    private String searchDetail;
     /** タスク重要度 */
     private List<Importance> importanceList;
     /** タスク進捗状況 */
-    private Progress progress;
+    private Progress searchProgress;
 
 }
