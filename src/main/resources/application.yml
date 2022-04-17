@@ -6,7 +6,7 @@ logging:
     org.springframework.web: info
     org:
       hibernate:
-        SQL: info
+        SQL: trace
         type:
           descriptor:
             sql:
