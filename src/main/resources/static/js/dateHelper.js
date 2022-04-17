@@ -88,8 +88,9 @@ function getCalendarObjects(startDate, endDate) {
  */
 function getMinimumDateOfTasks(taskArray) {
     dateArr =  taskArray.map(task => new Date(task.startDate));
-
-    return dateArr.reduce((date1, date2) => date1 > date2 ? date2 : date1);
+    
+    return dateArr.length !== 0 ? dateArr.reduce((date1, date2) => date1 > date2 ? date2 : date1)
+    : [];
 }
 
 /**
@@ -100,7 +101,8 @@ function getMinimumDateOfTasks(taskArray) {
 function getMaxDateOfTasks(taskArray) {
     dateArr =  taskArray.map(task => new Date(task.endDate));
 
-    return dateArr.reduce((date1, date2) => date1 < date2 ? date2 : date1);
+    return dateArr.length !== 0 ? dateArr.reduce((date1, date2) => date1 < date2 ? date2 : date1)
+    : [];
 }
 
 /**
