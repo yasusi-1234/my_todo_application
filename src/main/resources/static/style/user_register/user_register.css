@@ -1,0 +1,314 @@
+.pa-10 {
+  padding: 10px;
+}
+
+.pa-20 {
+  padding: 20px;
+}
+
+.mt-10 {
+  margin-top: 10px;
+}
+
+.font-a-s {
+  font-size: 12px;
+}
+
+.form-container {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.form {
+  margin: 20px;
+  padding: 20px;
+  border: 1px solid #2a2626;
+  -webkit-box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+          box-shadow: 3px 3px 5px 0px rgba(0, 0, 0, 0.3);
+}
+
+.form-item {
+  margin-bottom: 15px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: space-evenly;
+      -ms-flex-pack: space-evenly;
+          justify-content: space-evenly;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.form-item-top {
+  margin-bottom: 10px;
+}
+
+.form-item-bottom {
+  margin-bottom: 0;
+}
+
+.form-label {
+  width: 90px;
+  margin: 0;
+  font-weight: 700;
+  color: #544d4d;
+}
+
+.form-error {
+  color: crimson;
+  margin-bottom: 0;
+  font-size: 13px;
+}
+
+.form-text.error, .form-datetime.error {
+  background-color: #ffc9d3;
+}
+
+.form-text.error:focus, .form-datetime.error:focus {
+  background-color: #ffc9d3;
+}
+
+.form-text:focus, .form-datetime:focus {
+  -webkit-box-shadow: 0 0 5px 0px #ff9900;
+          box-shadow: 0 0 5px 0px #ff9900;
+  outline: #ff9900;
+  border: 2px solid #ff9900;
+  background-color: #d9ebf7;
+}
+
+.form-textarea.error, .form-select.error {
+  background-color: #ffc9d3;
+}
+
+.form-textarea.error:focus, .form-select.error:focus {
+  background-color: #ffc9d3;
+}
+
+.form-textarea:focus, .form-select:focus {
+  -webkit-box-shadow: 0 0 5px 0px #ff9900;
+          box-shadow: 0 0 5px 0px #ff9900;
+  outline: #ff9900;
+  border: 1px solid #ff9900;
+  background-color: #d9ebf7;
+}
+
+.form-datetime {
+  width: 200px;
+}
+
+.form-textarea {
+  width: 200px;
+}
+
+.btn-sink {
+  background: none;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #ff9800;
+  padding: 10px 20px;
+  color: white;
+  border-bottom: 5px solid #d37e00;
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+          box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+  -webkit-transition: all ease .3s;
+  transition: all ease .3s;
+  border-radius: 5px;
+}
+
+.btn-sink:hover {
+  border-bottom: 2px solid #d37e00;
+  margin-top: 3px;
+}
+
+.btn-sink-icon {
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+.btn-close {
+  position: relative;
+  z-index: 10;
+  background: none;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  overflow: hidden;
+  -webkit-transition: all ease 0.7s;
+  transition: all ease 0.7s;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: black;
+  padding: 10px 20px;
+  color: white;
+  -webkit-box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+          box-shadow: 2px 2px 5px 0px rgba(0, 0, 0, 0.5);
+  font-weight: 700;
+}
+
+.btn-close::before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #094;
+  -webkit-transform: translateX(-100%) skewX(50deg);
+          transform: translateX(-100%) skewX(50deg);
+  -webkit-transition: all ease 0.7s;
+  transition: all ease 0.7s;
+}
+
+.btn-close::after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: #094;
+  -webkit-transform: translateX(100%) skewX(50deg);
+          transform: translateX(100%) skewX(50deg);
+  -webkit-transition: all ease 0.7s;
+  transition: all ease 0.7s;
+}
+
+.btn-close:hover {
+  color: black;
+}
+
+.btn-close:hover::before {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: translateX(-20%) skewX(50deg);
+          transform: translateX(-20%) skewX(50deg);
+}
+
+.btn-close:hover::after {
+  display: block;
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  -webkit-transform: translateX(20%) skewX(50deg);
+          transform: translateX(20%) skewX(50deg);
+}
+
+.btn-close-icon {
+  font-weight: 700;
+  margin-right: 5px;
+}
+
+.btn-close span {
+  position: relative;
+  z-index: 100;
+}
+
+.btn-simple {
+  position: relative;
+  z-index: 10;
+  background: none;
+  outline: none;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border: none;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  background-color: #ebebeb;
+  color: #333;
+  border: 1px solid #ccc;
+}
+
+body {
+  font-family: "Roboto", "Noto Sans JP", sans-serif;
+}
+
+.title {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin-top: 50px;
+  margin-bottom: 10px;
+}
+
+.img-logo {
+  width: 150px;
+  height: 50px;
+}
+
+.go-login {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.go-login-p {
+  font-size: 12px;
+}
+
+.go-login-a {
+  margin-left: 10px;
+}
+
+@media (min-width: 960px) {
+  .main-bottom {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+  }
+  .task-detail {
+    width: 400px;
+  }
+}
+/*# sourceMappingURL=user_register.css.map */
