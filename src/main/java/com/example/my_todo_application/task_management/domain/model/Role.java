@@ -1,10 +1,10 @@
 package com.example.my_todo_application.task_management.domain.model;
 
-import lombok.EqualsAndHashCode;
+import org.hibernate.Hibernate;
 
 import javax.persistence.*;
+import java.util.Objects;
 
-@EqualsAndHashCode
 @Entity
 @Table(name = "role")
 public class Role {
@@ -30,5 +30,18 @@ public class Role {
 
     public void setRoleId(Integer roleId) {
         this.roleId = roleId;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Role role = (Role) o;
+        return roleId != null && Objects.equals(roleId, role.roleId);
+    }
+
+    @Override
+    public int hashCode() {
+        return getClass().hashCode();
     }
 }
