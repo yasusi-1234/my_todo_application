@@ -1,8 +1,18 @@
 package com.example.my_todo_application.task_management.controller;
 
+import com.example.my_todo_application.security.model.AppUserDetails;
 import com.example.my_todo_application.task_management.controller.form.UserRegisterForm;
+import com.example.my_todo_application.task_management.domain.model.AppUser;
 import com.example.my_todo_application.task_management.domain.service.UserRegisterService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -16,10 +26,19 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 @Controller
 @RequestMapping("user")
-@RequiredArgsConstructor
 public class UserRegisterController {
 
-    UserRegisterService userRegisterService;
+    private final UserRegisterService userRegisterService;
+
+    private final UserDetailsService appUserDetailsService;
+
+    @Autowired
+    public UserRegisterController(
+            UserRegisterService userRegisterService,
+            @Qualifier("appUserDetailsService") UserDetailsService appUserDetailsService) {
+        this.userRegisterService = userRegisterService;
+        this.appUserDetailsService = appUserDetailsService;
+    }
 
     @GetMapping("register")
     public String getUserRegister(
@@ -33,7 +52,6 @@ public class UserRegisterController {
             BindingResult bindingResult,
             UriComponentsBuilder uriBuilder,
             RedirectAttributes redirectAttributes){
-
         if(bindingResult.hasErrors()){
             return "user/user-register";
         }
@@ -45,14 +63,22 @@ public class UserRegisterController {
             userRegisterForm.getPassword()
         );
 
+        setAuthentication(userRegisterForm.getMailAddress());
+
         // リダイレクト先の指定
         String uri = MvcUriComponentsBuilder.relativeTo(uriBuilder)
-                .withMethodName(LoginController.class, "getLogin")
+                .withMappingName("TC#getTaskHome")
                 .build().toString();
 
         redirectAttributes.addFlashAttribute("complete", "登録が完了しました");
 
         return "redirect:" + uri;
+    }
+
+    private void setAuthentication(String username) {
+        UserDetails userDetails = appUserDetailsService.loadUserByUsername(username);
+        Authentication authentication = new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
+        SecurityContextHolder.getContext().setAuthentication(authentication);
     }
 
 
